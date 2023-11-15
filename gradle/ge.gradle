@@ -18,7 +18,7 @@
 def isCIBuild = System.getenv().keySet().find { it ==~ /(?i)((JENKINS|HUDSON)(_\w+)?|CI)/ } != null
 
 gradleEnterprise {
-    server = "http://potato:9080"
+    server = "https://develocity-field.gradle.com"
     buildScan {
         capture { taskInputFiles = true }
         uploadInBackground = true

@@ -184,3 +184,11 @@ apply from: file('gradle/hacks/turbocharge-jvm-opts.gradle')
 apply from: file('gradle/hacks/dummy-outputs.gradle')
 
 apply from: file('gradle/pylucene/pylucene.gradle')
+
+tasks.named('test', Test) {
+    retry {
+        maxRetries = 3
+        maxFailures = true
+        failOnPassedAfterRetry = true
+    }
+}
