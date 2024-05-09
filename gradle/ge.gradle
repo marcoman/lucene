@@ -28,10 +28,10 @@ gradleEnterprise {
 
 buildCache {
     local {
-        enabled = true
+        enabled = false
     }
 
     remote(gradleEnterprise.buildCache) {
-        enabled = true
+        enabled = false
     }
 }
