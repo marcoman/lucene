@@ -7,10 +7,9 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'checkout'
-                checkout changelog: true,
-                    poll: true,
-                    git branch: 'develocity-1',
-                    credentialsId: 'github'
+                git branch: 'develocity-1',
+                    credentialsId: 'github',
+                    changelog: true,
                     url: 'git@github.com:marcoman/lucene.git'
             }
         }
