@@ -17,13 +17,9 @@
 
 package org.apache.lucene.internal.vectorization;
 
-import java.lang.Runtime.Version;
 import java.lang.StackWalker.StackFrame;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalInt;
@@ -31,7 +27,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import org.apache.lucene.util.SuppressForbidden;
+import org.apache.lucene.util.Constants;
 import org.apache.lucene.util.VectorUtil;
 
 /**
@@ -51,7 +47,7 @@ public abstract class VectorizationProvider {
     try {
       vs =
           Stream.ofNullable(System.getProperty("tests.vectorsize"))
-              .filter(Predicate.not(String::isEmpty))
+              .filter(Predicate.not(Set.of("", "default")::contains))
               .mapToInt(Integer::parseInt)
               .findAny();
     } catch (
@@ -99,18 +95,21 @@ public abstract class VectorizationProvider {
 
   private static final Logger LOG = Logger.getLogger(VectorizationProvider.class.getName());
 
-  /** The minimal version of Java that has the bugfix for JDK-8301190. */
-  private static final Version VERSION_JDK8301190_FIXED = Version.parse("20.0.2");
-
   // visible for tests
   static VectorizationProvider lookup(boolean testMode) {
     final int runtimeVersion = Runtime.version().feature();
-    if (runtimeVersion >= 20 && runtimeVersion <= 21) {
-      // is locale sane (only buggy in Java 20)
-      if (isAffectedByJDK8301190()) {
+    assert runtimeVersion >= 21;
+    if (runtimeVersion <= 22) {
+      // only use vector module with Hotspot VM
+      if (!Constants.IS_HOTSPOT_VM) {
         LOG.warning(
-            "Java runtime is using a buggy default locale; Java vector incubator API can't be enabled: "
-                + Locale.getDefault());
+            "Java runtime is not using Hotspot VM; Java vector incubator API can't be enabled.");
+        return new DefaultVectorizationProvider();
+      }
+      // don't use vector module with JVMCI (it does not work)
+      if (Constants.IS_JVMCI_VM) {
+        LOG.warning(
+            "Java runtime is using JVMCI Compiler; Java vector incubator API can't be enabled.");
         return new DefaultVectorizationProvider();
       }
       // is the incubator module present and readable (JVM providers may to exclude them or it is
@@ -129,7 +128,7 @@ public abstract class VectorizationProvider {
               "Vector bitsize and/or integer vectors enforcement; using default vectorization provider outside of testMode");
           return new DefaultVectorizationProvider();
         }
-        if (isClientVM()) {
+        if (Constants.IS_CLIENT_VM) {
           LOG.warning("C2 compiler is disabled; Java vector incubator API can't be enabled");
           return new DefaultVectorizationProvider();
         }
@@ -159,13 +158,11 @@ public abstract class VectorizationProvider {
       } catch (ClassNotFoundException cnfe) {
         throw new LinkageError("PanamaVectorizationProvider is missing in Lucene JAR file", cnfe);
       }
-    } else if (runtimeVersion >= 22) {
+    } else {
       LOG.warning(
-          "You are running with Java 22 or later. To make full use of the Vector API, please update Apache Lucene.");
-    } else if (lookupVectorModule().isPresent()) {
-      LOG.warning(
-          "Java vector incubator module was enabled by command line flags, but your Java version is too old: "
-              + runtimeVersion);
+          "You are running with unsupported Java "
+              + runtimeVersion
+              + ". To make full use of the Vector API, please update Apache Lucene.");
     }
     return new DefaultVectorizationProvider();
   }
@@ -177,32 +174,6 @@ public abstract class VectorizationProvider {
     return Optional.ofNullable(VectorizationProvider.class.getModule().getLayer())
         .orElse(ModuleLayer.boot())
         .findModule("jdk.incubator.vector");
-  }
-
-  /**
-   * Check if runtime is affected by JDK-8301190 (avoids assertion when default language is say
-   * "tr").
-   */
-  private static boolean isAffectedByJDK8301190() {
-    return VERSION_JDK8301190_FIXED.compareToIgnoreOptional(Runtime.version()) > 0
-        && !Objects.equals("I", "i".toUpperCase(Locale.getDefault()));
-  }
-
-  @SuppressWarnings("removal")
-  @SuppressForbidden(reason = "security manager")
-  private static boolean isClientVM() {
-    try {
-      final PrivilegedAction<Boolean> action =
-          () -> System.getProperty("java.vm.info", "").contains("emulated-client");
-      return AccessController.doPrivileged(action);
-    } catch (
-        @SuppressWarnings("unused")
-        SecurityException e) {
-      LOG.warning(
-          "SecurityManager denies permission to 'java.vm.info' system property, so state of C2 compiler can't be detected. "
-              + "In case of performance issues allow access to this property.");
-      return false;
-    }
   }
 
   // add all possible callers here as FQCN:
