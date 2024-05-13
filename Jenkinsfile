@@ -1,6 +1,14 @@
 pipeline {
     agent any
     stages {
+        stage('Start') {
+            steps {
+                echo 'welcome to the build'
+                whoami
+                ls ~/
+                ls ~/.ssh
+            }
+        }
         stage('Checkout') {
             steps {
                 echo 'checkout'
