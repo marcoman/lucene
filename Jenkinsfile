@@ -4,9 +4,9 @@ pipeline {
         stage('Start') {
             steps {
                 echo 'welcome to the build'
-                whoami
-                ls ~/
-                ls ~/.ssh
+                sh 'whoami'
+                sh 'ls ~/'
+                sh 'ls ~/.ssh'
             }
         }
         stage('Checkout') {
