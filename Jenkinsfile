@@ -1,7 +1,7 @@
 pipeline {
     agent any
         tools {
-            jdk 'jdk 21'
+            jdk 'java-21-corretto'
         }
       
     stages {
