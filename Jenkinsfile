@@ -1,5 +1,9 @@
 pipeline {
     agent any
+        tools {
+            jdk 'jdk 21'
+        }
+      
     stages {
         stage('Start') {
             steps {
@@ -20,7 +24,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                echo 'gradle clean build'
+                echo './gradlew clean build'
+                sh './gradlew clean build'
             }
         }
     }
