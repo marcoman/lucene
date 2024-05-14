@@ -21,7 +21,7 @@ gradleEnterprise {
     server = "https://develocity-field.gradle.com"
     buildScan {
         capture { taskInputFiles = true }
-        uploadInBackground = false
+        uploadInBackground = true
         publishAlways()
         publishIfAuthenticated()
     }
