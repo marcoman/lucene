@@ -16,6 +16,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'checkout'
+                step([$class: 'WsCleanup'])
                 git branch: 'develocity-1',
                     credentialsId: 'github',
                     changelog: true,
