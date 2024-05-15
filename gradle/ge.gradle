@@ -21,7 +21,6 @@ gradleEnterprise {
     server = "https://develocity-field.gradle.com"
     buildScan {
         capture { taskInputFiles = true }
-        uploadInBackground = true
         uploadInBackground = false
         publishAlways()
     }
@@ -34,8 +33,6 @@ buildCache {
     }
 
     remote(gradleEnterprise.buildCache) {
-        enabled = true
-        push = true
         enabled = true
         push = true
     }
