@@ -21,15 +21,14 @@ gradleEnterprise {
     server = "https://develocity-field.gradle.com"
     buildScan {
         capture { taskInputFiles = true }
-        uploadInBackground = false
+        uploadInBackground = !isCIBuild
         publishAlways()
     }
 }
 
 buildCache {
     local {
-        enabled = true
-        enabled = true
+        enabled = !isCIBuild
     }
 
     remote(gradleEnterprise.buildCache) {
