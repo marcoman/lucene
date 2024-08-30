@@ -17,15 +17,21 @@
 package org.apache.lucene.tests.index;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.lucene.index.VectorSimilarityFunction.DOT_PRODUCT;
 import static org.apache.lucene.search.DocIdSetIterator.NO_MORE_DOCS;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import org.apache.lucene.codecs.Codec;
+import org.apache.lucene.codecs.KnnFieldVectorsWriter;
 import org.apache.lucene.codecs.KnnVectorsFormat;
 import org.apache.lucene.codecs.KnnVectorsReader;
+import org.apache.lucene.codecs.KnnVectorsWriter;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.KnnByteVectorField;
@@ -37,13 +43,19 @@ import org.apache.lucene.index.ByteVectorValues;
 import org.apache.lucene.index.CheckIndex;
 import org.apache.lucene.index.CodecReader;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.DocValuesType;
+import org.apache.lucene.index.FieldInfo;
+import org.apache.lucene.index.FieldInfos;
 import org.apache.lucene.index.FloatVectorValues;
+import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.LeafReader;
 import org.apache.lucene.index.LeafReaderContext;
 import org.apache.lucene.index.NoMergePolicy;
+import org.apache.lucene.index.SegmentInfo;
+import org.apache.lucene.index.SegmentWriteState;
 import org.apache.lucene.index.StoredFields;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.VectorEncoding;
@@ -59,7 +71,10 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.tests.util.TestUtil;
 import org.apache.lucene.util.Bits;
 import org.apache.lucene.util.BytesRef;
+import org.apache.lucene.util.InfoStream;
+import org.apache.lucene.util.StringHelper;
 import org.apache.lucene.util.VectorUtil;
+import org.apache.lucene.util.Version;
 import org.junit.Before;
 
 /**
@@ -84,8 +99,8 @@ public abstract class BaseKnnVectorsFormatTestCase extends BaseIndexFileFormatTe
   protected void addRandomFields(Document doc) {
     switch (vectorEncoding) {
       case BYTE -> doc.add(new KnnByteVectorField("v2", randomVector8(30), similarityFunction));
-      case FLOAT32 -> doc.add(
-          new KnnFloatVectorField("v2", randomNormalizedVector(30), similarityFunction));
+      case FLOAT32 ->
+          doc.add(new KnnFloatVectorField("v2", randomNormalizedVector(30), similarityFunction));
     }
   }
 
@@ -213,6 +228,68 @@ public abstract class BaseKnnVectorsFormatTestCase extends BaseIndexFileFormatTe
             expected.getMessage());
       }
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  public void testWriterRamEstimate() throws Exception {
+    final FieldInfos fieldInfos = new FieldInfos(new FieldInfo[0]);
+    final Directory dir = newDirectory();
+    Codec codec = Codec.getDefault();
+    final SegmentInfo si =
+        new SegmentInfo(
+            dir,
+            Version.LATEST,
+            Version.LATEST,
+            "0",
+            10000,
+            false,
+            false,
+            codec,
+            Collections.emptyMap(),
+            StringHelper.randomId(),
+            new HashMap<>(),
+            null);
+    final SegmentWriteState state =
+        new SegmentWriteState(
+            InfoStream.getDefault(), dir, si, fieldInfos, null, newIOContext(random()));
+    final KnnVectorsFormat format = codec.knnVectorsFormat();
+    try (KnnVectorsWriter writer = format.fieldsWriter(state)) {
+      final long ramBytesUsed = writer.ramBytesUsed();
+      int dim = random().nextInt(64) + 1;
+      if (dim % 2 == 1) {
+        ++dim;
+      }
+      int numDocs = atLeast(100);
+      KnnFieldVectorsWriter<float[]> fieldWriter =
+          (KnnFieldVectorsWriter<float[]>)
+              writer.addField(
+                  new FieldInfo(
+                      "fieldA",
+                      0,
+                      false,
+                      false,
+                      false,
+                      IndexOptions.NONE,
+                      DocValuesType.NONE,
+                      false,
+                      -1,
+                      Map.of(),
+                      0,
+                      0,
+                      0,
+                      dim,
+                      VectorEncoding.FLOAT32,
+                      VectorSimilarityFunction.DOT_PRODUCT,
+                      false,
+                      false));
+      for (int i = 0; i < numDocs; i++) {
+        fieldWriter.addValue(i, randomVector(dim));
+      }
+      final long ramBytesUsed2 = writer.ramBytesUsed();
+      assertTrue(ramBytesUsed2 > ramBytesUsed);
+      assertTrue(ramBytesUsed2 > (long) dim * numDocs * Float.BYTES);
+    }
+    dir.close();
   }
 
   public void testIllegalSimilarityFunctionChangeTwoWriters() throws Exception {
@@ -834,6 +911,58 @@ public abstract class BaseKnnVectorsFormatTestCase extends BaseIndexFileFormatTe
           assertNotSame(scorer, newScorer);
           assertNotSame(iterator, newScorer.iterator());
         }
+      }
+    }
+  }
+
+  public void testEmptyFloatVectorData() throws Exception {
+    try (Directory dir = newDirectory();
+        IndexWriter w = new IndexWriter(dir, newIndexWriterConfig())) {
+      var doc1 = new Document();
+      doc1.add(new StringField("id", "0", Field.Store.NO));
+      doc1.add(new KnnFloatVectorField("v", new float[] {2, 3, 5, 6}, DOT_PRODUCT));
+      w.addDocument(doc1);
+
+      var doc2 = new Document();
+      doc2.add(new StringField("id", "1", Field.Store.NO));
+      w.addDocument(doc2);
+
+      w.deleteDocuments(new Term("id", Integer.toString(0)));
+      w.commit();
+      w.forceMerge(1);
+
+      try (DirectoryReader reader = DirectoryReader.open(w)) {
+        LeafReader r = getOnlyLeafReader(reader);
+        FloatVectorValues values = r.getFloatVectorValues("v");
+        assertNotNull(values);
+        assertEquals(0, values.size());
+        assertNull(values.scorer(new float[] {2, 3, 5, 6}));
+      }
+    }
+  }
+
+  public void testEmptyByteVectorData() throws Exception {
+    try (Directory dir = newDirectory();
+        IndexWriter w = new IndexWriter(dir, newIndexWriterConfig())) {
+      var doc1 = new Document();
+      doc1.add(new StringField("id", "0", Field.Store.NO));
+      doc1.add(new KnnByteVectorField("v", new byte[] {2, 3, 5, 6}, DOT_PRODUCT));
+      w.addDocument(doc1);
+
+      var doc2 = new Document();
+      doc2.add(new StringField("id", "1", Field.Store.NO));
+      w.addDocument(doc2);
+
+      w.deleteDocuments(new Term("id", Integer.toString(0)));
+      w.commit();
+      w.forceMerge(1);
+
+      try (DirectoryReader reader = DirectoryReader.open(w)) {
+        LeafReader r = getOnlyLeafReader(reader);
+        ByteVectorValues values = r.getByteVectorValues("v");
+        assertNotNull(values);
+        assertEquals(0, values.size());
+        assertNull(values.scorer(new byte[] {2, 3, 5, 6}));
       }
     }
   }

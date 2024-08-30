@@ -29,6 +29,9 @@ import org.apache.lucene.util.hnsw.RandomVectorScorerSupplier;
  * @lucene.experimental
  */
 public class DefaultFlatVectorScorer implements FlatVectorsScorer {
+
+  public static final DefaultFlatVectorScorer INSTANCE = new DefaultFlatVectorScorer();
+
   @Override
   public RandomVectorScorerSupplier getRandomVectorScorerSupplier(
       VectorSimilarityFunction similarityFunction, RandomAccessVectorValues vectorValues)
@@ -113,6 +116,11 @@ public class DefaultFlatVectorScorer implements FlatVectorsScorer {
     public RandomVectorScorerSupplier copy() throws IOException {
       return new ByteScoringSupplier(vectors, similarityFunction);
     }
+
+    @Override
+    public String toString() {
+      return "ByteScoringSupplier(similarityFunction=" + similarityFunction + ")";
+    }
   }
 
   /** RandomVectorScorerSupplier for Float vector */
@@ -144,6 +152,11 @@ public class DefaultFlatVectorScorer implements FlatVectorsScorer {
     @Override
     public RandomVectorScorerSupplier copy() throws IOException {
       return new FloatScoringSupplier(vectors, similarityFunction);
+    }
+
+    @Override
+    public String toString() {
+      return "FloatScoringSupplier(similarityFunction=" + similarityFunction + ")";
     }
   }
 

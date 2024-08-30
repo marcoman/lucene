@@ -27,14 +27,17 @@ import org.apache.lucene.codecs.Codec;
 import org.apache.lucene.codecs.KnnVectorsFormat;
 import org.apache.lucene.codecs.KnnVectorsReader;
 import org.apache.lucene.codecs.hnsw.DefaultFlatVectorScorer;
+import org.apache.lucene.codecs.lucene912.Lucene912Codec;
 import org.apache.lucene.codecs.perfield.PerFieldKnnVectorsFormat;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.document.KnnFloatVectorField;
 import org.apache.lucene.index.CodecReader;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.LeafReader;
+import org.apache.lucene.index.StoredFields;
 import org.apache.lucene.index.VectorSimilarityFunction;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.IOContext;
@@ -49,7 +52,7 @@ import org.apache.lucene.util.quantization.ScalarQuantizer;
 public class TestLucene99ScalarQuantizedVectorScorer extends LuceneTestCase {
 
   private static Codec getCodec(int bits, boolean compress) {
-    return new Lucene99Codec() {
+    return new Lucene912Codec() {
       @Override
       public KnnVectorsFormat getKnnVectorsFormatForField(String field) {
         return new Lucene99HnswScalarQuantizedVectorsFormat(
@@ -58,7 +61,7 @@ public class TestLucene99ScalarQuantizedVectorScorer extends LuceneTestCase {
             1,
             bits,
             compress,
-            null,
+            0f,
             null);
       }
     };
@@ -249,6 +252,59 @@ public class TestLucene99ScalarQuantizedVectorScorer extends LuceneTestCase {
       }
       writer.commit();
       writer.forceMerge(1);
+    }
+  }
+
+  public void testSingleVectorPerSegmentCosine() throws IOException {
+    testSingleVectorPerSegment(VectorSimilarityFunction.COSINE);
+  }
+
+  public void testSingleVectorPerSegmentDot() throws IOException {
+    testSingleVectorPerSegment(VectorSimilarityFunction.DOT_PRODUCT);
+  }
+
+  public void testSingleVectorPerSegmentEuclidean() throws IOException {
+    testSingleVectorPerSegment(VectorSimilarityFunction.EUCLIDEAN);
+  }
+
+  public void testSingleVectorPerSegmentMIP() throws IOException {
+    testSingleVectorPerSegment(VectorSimilarityFunction.MAXIMUM_INNER_PRODUCT);
+  }
+
+  private void testSingleVectorPerSegment(VectorSimilarityFunction sim) throws IOException {
+    var codec = getCodec(7, false);
+    try (Directory dir = newDirectory()) {
+      try (IndexWriter writer = new IndexWriter(dir, new IndexWriterConfig().setCodec(codec))) {
+        Document doc2 = new Document();
+        doc2.add(new KnnFloatVectorField("field", new float[] {0.8f, 0.6f}, sim));
+        doc2.add(newTextField("id", "A", Field.Store.YES));
+        writer.addDocument(doc2);
+        writer.commit();
+
+        Document doc1 = new Document();
+        doc1.add(new KnnFloatVectorField("field", new float[] {0.6f, 0.8f}, sim));
+        doc1.add(newTextField("id", "B", Field.Store.YES));
+        writer.addDocument(doc1);
+        writer.commit();
+
+        Document doc3 = new Document();
+        doc3.add(new KnnFloatVectorField("field", new float[] {-0.6f, -0.8f}, sim));
+        doc3.add(newTextField("id", "C", Field.Store.YES));
+        writer.addDocument(doc3);
+        writer.commit();
+
+        writer.forceMerge(1);
+      }
+      try (DirectoryReader reader = DirectoryReader.open(dir)) {
+        LeafReader leafReader = getOnlyLeafReader(reader);
+        StoredFields storedFields = reader.storedFields();
+        float[] queryVector = new float[] {0.6f, 0.8f};
+        var hits = leafReader.searchNearestVectors("field", queryVector, 3, null, 100);
+        assertEquals(hits.scoreDocs.length, 3);
+        assertEquals("B", storedFields.document(hits.scoreDocs[0].doc).get("id"));
+        assertEquals("A", storedFields.document(hits.scoreDocs[1].doc).get("id"));
+        assertEquals("C", storedFields.document(hits.scoreDocs[2].doc).get("id"));
+      }
     }
   }
 
