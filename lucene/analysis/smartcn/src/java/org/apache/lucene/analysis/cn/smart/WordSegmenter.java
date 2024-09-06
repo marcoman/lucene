@@ -47,7 +47,9 @@ class WordSegmenter {
     List<SegToken> result = Collections.emptyList();
 
     if (segTokenList.size() > 2) // if it's not an empty sentence
-    result = segTokenList.subList(1, segTokenList.size() - 1);
+    {
+        result = segTokenList.subList(1, segTokenList.size() - 1);
+    }
 
     for (SegToken st : result) convertSegToken(st, sentence, startOffset);
 

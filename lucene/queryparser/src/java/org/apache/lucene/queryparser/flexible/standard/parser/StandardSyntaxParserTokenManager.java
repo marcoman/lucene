@@ -2100,13 +2100,17 @@ public Token getNextToken()
         {
            matchedToken = jjFillToken();
        if (jjnewLexState[jjmatchedKind] != -1)
-         curLexState = jjnewLexState[jjmatchedKind];
+         {
+             curLexState = jjnewLexState[jjmatchedKind];
+         }
            return matchedToken;
         }
         else
         {
          if (jjnewLexState[jjmatchedKind] != -1)
-           curLexState = jjnewLexState[jjmatchedKind];
+           {
+               curLexState = jjnewLexState[jjmatchedKind];
+           }
            continue EOFLoop;
         }
      }

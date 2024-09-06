@@ -39,7 +39,9 @@ class FilterCellIterator extends CellIterator {
   public boolean hasNext() {
     thisCell = null;
     if (nextCell != null) // calling hasNext twice in a row
-    return true;
+    {
+        return true;
+    }
     while (baseIter.hasNext()) {
       nextCell = baseIter.next();
       if (shapeFilter == null) {

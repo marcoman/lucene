@@ -40,7 +40,9 @@ public class TestBBoxStrategy extends RandomSpatialOpStrategyTestCase {
   protected Shape randomIndexedShape() {
     Rectangle world = ctx.getWorldBounds();
     if (random().nextInt(10) == 0) // increased chance of getting one of these
-    return world;
+    {
+        return world;
+    }
 
     int worldWidth = (int) Math.round(world.getWidth());
     int deltaLeft = nextIntInclusive(worldWidth);

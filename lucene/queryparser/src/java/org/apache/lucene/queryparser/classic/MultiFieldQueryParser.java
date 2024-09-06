@@ -99,7 +99,9 @@ public class MultiFieldQueryParser extends QueryParser {
         }
       }
       if (clauses.size() == 0) // happens for stopwords
-      return null;
+      {
+          return null;
+      }
       return getMultiFieldQuery(clauses);
     }
     Query q = super.getFieldQuery(field, queryText, true);
@@ -198,7 +200,9 @@ public class MultiFieldQueryParser extends QueryParser {
         }
       }
       if (clauses.size() == 0) // happens for stopwords
-      return null;
+      {
+          return null;
+      }
       return getMultiFieldQuery(clauses);
     }
     Query q = super.getFieldQuery(field, queryText, quoted);

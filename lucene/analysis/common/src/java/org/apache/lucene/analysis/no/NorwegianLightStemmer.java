@@ -95,7 +95,9 @@ class NorwegianLightStemmer {
             || // general ending (hemmelig-heten -> hemmelig)
             (endsWith(s, len, "heita")
                 && useNynorsk))) // general ending (hemmeleg-heita -> hemmeleg)
-    return len - 5;
+    {
+        return len - 5;
+    }
 
     // Remove Nynorsk common endings, single-pass
     if (len > 8
@@ -105,13 +107,17 @@ class NorwegianLightStemmer {
             endsWith(s, len, "leiken")
             || // general ending (trygg-leiken -> trygg)
             endsWith(s, len, "leikar"))) // general ending (trygg-leikar -> trygg)
-    return len - 6;
+    {
+        return len - 6;
+    }
 
     if (len > 5
         && (endsWith(s, len, "dom")
             || // general ending (kristen-dom -> kristen)
             (endsWith(s, len, "het") && useBokmaal))) // general ending (hemmelig-het -> hemmelig)
-    return len - 3;
+    {
+        return len - 3;
+    }
 
     if (len > 6
         && useNynorsk
@@ -120,13 +126,17 @@ class NorwegianLightStemmer {
             endsWith(s, len, "semd")
             || // general ending (verk-semd -> verk)
             endsWith(s, len, "leik"))) // general ending (trygg-leik -> trygg)
-    return len - 4;
+    {
+        return len - 4;
+    }
 
     if (len > 7
         && (endsWith(s, len, "elser")
             || // general ending (føl-elser -> føl)
             endsWith(s, len, "elsen"))) // general ending (føl-elsen -> føl)
-    return len - 5;
+    {
+        return len - 5;
+    }
 
     if (len > 6
         && ((endsWith(s, len, "ende") && useBokmaal)
@@ -142,7 +152,9 @@ class NorwegianLightStemmer {
             (endsWith(s, len, "eren") && useBokmaal)
             || // masc
             (endsWith(s, len, "aren") && useNynorsk))) // masc
-    return len - 4;
+    {
+        return len - 4;
+    }
 
     if (len > 5
         && ((endsWith(s, len, "ere") && useBokmaal)
@@ -156,7 +168,9 @@ class NorwegianLightStemmer {
             endsWith(s, len, "ene")
             || // masc/fem/neutr pl definite (hus-ene)
             (endsWith(s, len, "ane") && useNynorsk))) // masc pl definite (gut-ane)
-    return len - 3;
+    {
+        return len - 3;
+    }
 
     if (len > 4
         && (endsWith(s, len, "er")

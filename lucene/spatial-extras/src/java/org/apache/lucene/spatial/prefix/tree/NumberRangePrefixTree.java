@@ -850,7 +850,9 @@ public abstract class NumberRangePrefixTree extends SpatialPrefixTree {
     public boolean hasNext() {
       thisCell = null;
       if (nextCell != null) // calling hasNext twice in a row
-      return true;
+      {
+          return true;
+      }
 
       if (cellNumber >= iterLastCellNumber) return false;
 

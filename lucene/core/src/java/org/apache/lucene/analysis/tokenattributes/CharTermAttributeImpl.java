@@ -117,14 +117,18 @@ public class CharTermAttributeImpl extends AttributeImpl
   @Override
   public final CharTermAttribute append(CharSequence csq) {
     if (csq == null) // needed for Appendable compliance
-    return appendNull();
+    {
+        return appendNull();
+    }
     return append(csq, 0, csq.length());
   }
 
   @Override
   public final CharTermAttribute append(CharSequence csq, int start, int end) {
     if (csq == null) // needed for Appendable compliance
-    csq = "null";
+    {
+        csq = "null";
+    }
     // TODO: the optimized cases (jdk methods) will already do such checks, maybe re-organize this?
     Objects.checkFromToIndex(start, end, csq.length());
     final int len = end - start;
@@ -167,7 +171,9 @@ public class CharTermAttributeImpl extends AttributeImpl
   @Override
   public final CharTermAttribute append(String s) {
     if (s == null) // needed for Appendable compliance
-    return appendNull();
+    {
+        return appendNull();
+    }
     final int len = s.length();
     s.getChars(0, len, resizeBuffer(termLength + len), termLength);
     termLength += len;
@@ -177,7 +183,9 @@ public class CharTermAttributeImpl extends AttributeImpl
   @Override
   public final CharTermAttribute append(StringBuilder s) {
     if (s == null) // needed for Appendable compliance
-    return appendNull();
+    {
+        return appendNull();
+    }
     final int len = s.length();
     s.getChars(0, len, resizeBuffer(termLength + len), termLength);
     termLength += len;
@@ -187,7 +195,9 @@ public class CharTermAttributeImpl extends AttributeImpl
   @Override
   public final CharTermAttribute append(CharTermAttribute ta) {
     if (ta == null) // needed for Appendable compliance
-    return appendNull();
+    {
+        return appendNull();
+    }
     final int len = ta.length();
     System.arraycopy(ta.buffer(), 0, resizeBuffer(termLength + len), termLength, len);
     termLength += len;

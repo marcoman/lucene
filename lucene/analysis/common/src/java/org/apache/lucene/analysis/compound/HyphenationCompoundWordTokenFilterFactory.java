@@ -109,7 +109,9 @@ public class HyphenationCompoundWordTokenFilterFactory extends TokenFilterFactor
     InputStream stream = null;
     try {
       if (dictFile != null) // the dictionary can be empty.
-      dictionary = getWordSet(loader, dictFile, false);
+      {
+          dictionary = getWordSet(loader, dictFile, false);
+      }
       // TODO: Broken, because we cannot resolve real system id
       // ResourceLoader should also supply method like ClassLoader to get resource URL
       stream = loader.openResource(hypFile);

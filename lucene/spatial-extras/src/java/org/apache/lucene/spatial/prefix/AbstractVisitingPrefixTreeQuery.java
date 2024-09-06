@@ -226,7 +226,9 @@ public abstract class AbstractVisitingPrefixTreeQuery extends AbstractPrefixTree
 
         Iterator<Cell> subCellsIter = findSubCellsToVisit(cell);
         if (!subCellsIter.hasNext()) // not expected
-        return;
+        {
+            return;
+        }
         curVNode.children = new VNodeCellIterator(subCellsIter, new VNode(curVNode));
 
       } else {

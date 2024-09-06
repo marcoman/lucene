@@ -26,7 +26,9 @@ public class TestSmallFloat extends LuceneTestCase {
   // original lucene byteToFloat
   static float orig_byteToFloat(byte b) {
     if (b == 0) // zero is a special case
-    return 0.0f;
+    {
+        return 0.0f;
+    }
     int mantissa = b & 7;
     int exponent = (b >> 3) & 31;
     int bits = ((exponent + (63 - 15)) << 24) | (mantissa << 21);
@@ -36,10 +38,14 @@ public class TestSmallFloat extends LuceneTestCase {
   // original lucene floatToByte (since lucene 1.3)
   static byte orig_floatToByte_v13(float f) {
     if (f < 0.0f) // round negatives up to zero
-    f = 0.0f;
+    {
+        f = 0.0f;
+    }
 
     if (f == 0.0f) // zero is a special case
-    return 0;
+    {
+        return 0;
+    }
 
     int bits = Float.floatToIntBits(f); // parse float into parts
     int mantissa = (bits & 0xffffff) >> 21;
@@ -62,10 +68,14 @@ public class TestSmallFloat extends LuceneTestCase {
   // except with the underflow detection bug fixed for values like 5.8123817E-10f
   static byte orig_floatToByte(float f) {
     if (f < 0.0f) // round negatives up to zero
-    f = 0.0f;
+    {
+        f = 0.0f;
+    }
 
     if (f == 0.0f) // zero is a special case
-    return 0;
+    {
+        return 0;
+    }
 
     int bits = Float.floatToIntBits(f); // parse float into parts
     int mantissa = (bits & 0xffffff) >> 21;

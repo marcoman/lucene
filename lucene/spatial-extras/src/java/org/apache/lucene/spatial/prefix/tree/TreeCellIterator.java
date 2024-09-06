@@ -52,7 +52,9 @@ class TreeCellIterator extends CellIterator {
     if (nextCell != null) return true;
     while (true) {
       if (stackIdx == -1) // the only condition in which we return false
-      return false;
+      {
+          return false;
+      }
       // If we can descend...
       if (descend
           && !(stackIdx == iterStack.length - 1 || iterStack[stackIdx].thisCell().isLeaf())) {
@@ -66,7 +68,9 @@ class TreeCellIterator extends CellIterator {
         // at detailLevel
         if (stackIdx == iterStack.length - 1
             && !(shapeFilter instanceof Point)) // point check is a kludge
-        nextCell.setLeaf(); // because at bottom
+        {
+            nextCell.setLeaf();
+        } // because at bottom
         break;
       }
       // Couldn't get next; go up...

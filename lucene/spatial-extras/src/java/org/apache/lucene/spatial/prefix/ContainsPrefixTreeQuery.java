@@ -106,7 +106,9 @@ public class ContainsPrefixTreeQuery extends AbstractPrefixTreeQuery {
     private SmallDocSet visit(Cell cell, Bits acceptContains) throws IOException {
 
       if (thisTerm == null) // signals all done
-      return null;
+      {
+          return null;
+      }
 
       // Get the AND of all child results (into combinedSubResults)
       SmallDocSet combinedSubResults = null;

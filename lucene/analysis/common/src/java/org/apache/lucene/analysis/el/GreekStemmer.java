@@ -41,7 +41,9 @@ class GreekStemmer {
    */
   int stem(char[] s, int len) {
     if (len < 4) // too short
-    return len;
+    {
+        return len;
+    }
 
     final int origLen = len;
     // "short rules": if it hits one of these, it skips the "long list"

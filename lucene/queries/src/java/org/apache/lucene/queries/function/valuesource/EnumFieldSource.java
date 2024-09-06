@@ -77,15 +77,21 @@ public class EnumFieldSource extends FieldCacheSource {
     Integer intValue;
     final Integer enumInt = enumStringToIntMap.get(stringVal);
     if (enumInt != null) // enum int found for string
-    return enumInt;
+    {
+        return enumInt;
+    }
 
     // enum int not found for string
     intValue = tryParseInt(stringVal);
     if (intValue == null) // not Integer
-    intValue = DEFAULT_VALUE;
+    {
+        intValue = DEFAULT_VALUE;
+    }
     final String enumString = enumIntToStringMap.get(intValue);
     if (enumString != null) // has matching string
-    return intValue;
+    {
+        return intValue;
+    }
 
     return DEFAULT_VALUE;
   }

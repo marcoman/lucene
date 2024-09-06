@@ -35,7 +35,9 @@ class BulgarianStemmer {
    */
   int stem(final char[] s, int len) {
     if (len < 4) // do not stem
-    return len;
+    {
+        return len;
+    }
 
     if (len > 5 && endsWith(s, len, "ища")) {
       return len - 3;

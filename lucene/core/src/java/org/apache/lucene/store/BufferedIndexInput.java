@@ -301,7 +301,9 @@ public abstract class BufferedIndexInput extends IndexInput implements RandomAcc
     long start = bufferStart + buffer.position();
     long end = start + bufferSize;
     if (end > length()) // don't read past EOF
-    end = length();
+    {
+        end = length();
+    }
     int newLength = (int) (end - start);
     if (newLength <= 0) throw new EOFException("read past EOF: " + this);
 

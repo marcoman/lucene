@@ -175,7 +175,9 @@ public class DateRangePrefixTree extends NumberRangePrefixTree {
     int cmp = comparePrefix(lv, maxLV);
     assert cmp <= 0;
     if (cmp == 0) // edge case (literally!)
-    return maxLV.getValAtLevel(lv.getLevel() + 1) + 1;
+    {
+        return maxLV.getValAtLevel(lv.getLevel() + 1) + 1;
+    }
 
     // if using GregorianCalendar and we're after the "Gregorian change date" then we'll compute
     //  the sub-cells ourselves more efficiently without the need to construct a Calendar.
@@ -224,7 +226,9 @@ public class DateRangePrefixTree extends NumberRangePrefixTree {
     if (field == -1
         || field == Calendar.YEAR
         || field >= Calendar.HOUR_OF_DAY) // TODO make configurable
-    return super.getNumSubCells(lv);
+    {
+        return super.getNumSubCells(lv);
+    }
     // somewhat heavyweight op; ideally should be stored on UnitNRShape somehow
     Calendar cal = toCalendar(lv);
     return cal.getActualMaximum(field) - cal.getActualMinimum(field) + 1;

@@ -132,7 +132,9 @@ public abstract class SegmentingTokenizerBase extends Tokenizer {
     else {
       /* still more data to be read, find a safe-stopping place */
       usableLength = findSafeEnd();
-      if (usableLength < 0) usableLength = length; /*
+      if (usableLength < 0) {
+          usableLength = length;
+      } /*
                                 * more than IOBUFFER of text without breaks,
                                 * gonna possibly truncate tokens
                                 */
@@ -163,7 +165,9 @@ public abstract class SegmentingTokenizerBase extends Tokenizer {
   /** return true if there is a token from the buffer, or null if it is exhausted. */
   private boolean incrementSentence() throws IOException {
     if (length == 0) // we must refill the buffer
-    return false;
+    {
+        return false;
+    }
 
     while (true) {
       int start = iterator.current();

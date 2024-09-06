@@ -116,7 +116,9 @@ public class QuadPrefixTree extends LegacyPrefixTree {
   @Override
   public int getLevelForDistance(double dist) {
     if (dist == 0) // short circuit
-    return maxLevels;
+    {
+        return maxLevels;
+    }
     for (int i = 0; i < maxLevels - 1; i++) {
       // note: level[i] is actually a lookup for level i+1
       if (dist > levelW[i] && dist > levelH[i]) {
