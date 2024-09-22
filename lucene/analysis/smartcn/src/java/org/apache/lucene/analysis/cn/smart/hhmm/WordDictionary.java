@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.analysis.cn.smart.hhmm;
 
+import io.github.pixee.security.ObjectInputFilters;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -150,6 +151,7 @@ class WordDictionary extends AbstractDictionary {
   private void loadFromObjectInputStream(InputStream serialObjectInputStream)
       throws IOException, ClassNotFoundException {
     try (ObjectInputStream input = new ObjectInputStream(serialObjectInputStream)) {
+      ObjectInputFilters.enableObjectFilterIfUnprotected(input);
       wordIndexTable = (short[]) input.readObject();
       charIndexTable = (char[]) input.readObject();
       wordItem_charArrayTable = (char[][][]) input.readObject();

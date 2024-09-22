@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.analysis.cn.smart.hhmm;
 
+import io.github.pixee.security.ObjectInputFilters;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -90,6 +91,7 @@ class BigramDictionary extends AbstractDictionary {
   private void loadFromInputStream(InputStream serialObjectInputStream)
       throws IOException, ClassNotFoundException {
     try (ObjectInputStream input = new ObjectInputStream(serialObjectInputStream)) {
+      ObjectInputFilters.enableObjectFilterIfUnprotected(input);
       bigramHashTable = (long[]) input.readObject();
       frequencyTable = (int[]) input.readObject();
       // log.info("load bigram dict from serialization.");
