@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.tests.util;
 
+import io.github.pixee.security.ZipSecurity;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.carrotsearch.randomizedtesting.RandomizedTest;
@@ -146,7 +147,7 @@ public final class TestUtil {
   public static void unzip(InputStream in, Path destDir) throws IOException {
     in = new BufferedInputStream(in);
 
-    try (ZipInputStream zipInput = new ZipInputStream(in)) {
+    try (ZipInputStream zipInput = ZipSecurity.createHardenedInputStream(in)) {
       ZipEntry entry;
       byte[] buffer = new byte[8192];
       while ((entry = zipInput.getNextEntry()) != null) {
