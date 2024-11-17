@@ -18,6 +18,7 @@ package org.apache.lucene.demo.facet;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.Random;
 import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
 import org.apache.lucene.document.Document;
@@ -89,7 +90,7 @@ public class RangeFacetsExample implements Closeable {
       // different counts
       for (int j = 0; j < i % 35; j++) {
         Document doc = new Document();
-        Random r = new Random();
+        Random r = new SecureRandom();
         // Randomly generate a timestamp within the current range
         long randomTimestamp = r.nextLong(1, endTime - startTime) + startTime;
         // Add as doc values field, so we can compute range facets:

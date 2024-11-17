@@ -18,6 +18,7 @@
 package org.apache.lucene.benchmark.jmh;
 
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import org.apache.lucene.util.VectorUtil;
@@ -51,7 +52,7 @@ public class HammingDistanceBenchmark {
 
   @Setup
   public void setup() throws IOException {
-    Random rand = new Random();
+    Random rand = new SecureRandom();
     this.xb = new byte[nb][dims / 8];
     for (int i = 0; i < nb; i++) {
       for (int j = 0; j < dims / 8; j++) {

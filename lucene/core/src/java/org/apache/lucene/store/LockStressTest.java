@@ -23,6 +23,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.util.Random;
 import org.apache.lucene.util.SuppressForbidden;
 
@@ -110,7 +111,7 @@ public class LockStressTest {
       out.write(myID);
       out.flush();
       LockFactory verifyLF = new VerifyingLockFactory(lockFactory, in, out);
-      final Random rnd = new Random();
+      final Random rnd = new SecureRandom();
 
       // wait for starting gun
       if (in.read() != LockVerifyServer.START_GUN_SIGNAL) {
