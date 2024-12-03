@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.gradle.datasets;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -78,7 +79,7 @@ public class ExtractReuters {
 
       String line = null;
       int docNumber = 0;
-      while ((line = reader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         // when we see a closing reuters tag, flush the file
 
         if (line.contains("</REUTERS") == false) {

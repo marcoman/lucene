@@ -17,6 +17,7 @@
 package org.apache.lucene.analysis.hunspell;
 
 import com.carrotsearch.randomizedtesting.annotations.TestCaseOrdering;
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -261,7 +262,7 @@ public class TestPerformance extends LuceneTestCase {
       BufferedReader reader =
           new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
       while (true) {
-        String line = reader.readLine();
+        String line = BoundedLineReader.readLine(reader, 5_000_000);
         if (line == null) break;
 
         for (String token :

@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.benchmark.byTask.feeds;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -139,7 +140,7 @@ public class TrecContentSource extends ContentSource {
       throws IOException, NoMoreDataException {
     String sep = "";
     while (true) {
-      String line = reader.readLine();
+      String line = BoundedLineReader.readLine(reader, 5_000_000);
 
       if (line == null) {
         openNextFile();

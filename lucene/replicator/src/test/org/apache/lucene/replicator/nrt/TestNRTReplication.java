@@ -17,6 +17,7 @@
 
 package org.apache.lucene.replicator.nrt;
 
+import io.github.pixee.security.BoundedLineReader;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.carrotsearch.randomizedtesting.SeedUtils;
@@ -129,7 +130,7 @@ public class TestNRTReplication extends LuceneTestCase {
     Pattern logTimeStart = Pattern.compile("^[0-9.]+s .*");
 
     while (true) {
-      String l = r.readLine();
+      String l = BoundedLineReader.readLine(r, 5_000_000);
       if (l == null) {
         message("top: node=" + id + " failed to start");
         try {

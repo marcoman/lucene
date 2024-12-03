@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.demo.knn;
 
+import io.github.pixee.security.BoundedLineReader;
 import static org.apache.lucene.util.fst.FST.readMetadata;
 
 import java.io.BufferedReader;
@@ -173,7 +174,7 @@ public class KnnVectorDict implements Closeable {
     }
 
     private String[] readOneLine(BufferedReader in) throws IOException {
-      String line = in.readLine();
+      String line = BoundedLineReader.readLine(in, 5_000_000);
       if (line == null) {
         return null;
       }

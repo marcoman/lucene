@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.analysis.synonym;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -81,7 +82,7 @@ public class SolrSynonymParser extends SynonymMap.Parser {
 
   private void addInternal(BufferedReader in) throws IOException {
     String line = null;
-    while ((line = in.readLine()) != null) {
+    while ((line = BoundedLineReader.readLine(in, 5_000_000)) != null) {
       if (line.length() == 0 || line.charAt(0) == '#') {
         continue; // ignore empty lines and comments
       }

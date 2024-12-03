@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.demo;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -123,7 +124,7 @@ public class SearchFiles {
         System.out.println("Enter query: ");
       }
 
-      String line = queryString != null ? queryString : in.readLine();
+      String line = queryString != null ? queryString : BoundedLineReader.readLine(in, 5_000_000);
 
       if (line == null || line.length() == -1) {
         break;
@@ -194,7 +195,7 @@ public class SearchFiles {
                 + numTotalHits
                 + " total matching documents collected.");
         System.out.println("Collect more (y/n) ?");
-        String line = in.readLine();
+        String line = BoundedLineReader.readLine(in, 5_000_000);
         if (line == null || line.length() == 0 || line.charAt(0) == 'n') {
           break;
         }
@@ -240,7 +241,7 @@ public class SearchFiles {
           }
           System.out.println("(q)uit or enter number to jump to a page.");
 
-          String line = in.readLine();
+          String line = BoundedLineReader.readLine(in, 5_000_000);
           if (line == null || line.length() == 0 || line.charAt(0) == 'q') {
             quit = true;
             break;

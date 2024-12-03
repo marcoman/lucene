@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.tests.analysis;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,8 +39,8 @@ public class VocabularyAssert {
     BufferedReader outputReader =
         new BufferedReader(new InputStreamReader(out, StandardCharsets.UTF_8));
     String inputWord = null;
-    while ((inputWord = vocReader.readLine()) != null) {
-      String expectedWord = outputReader.readLine();
+    while ((inputWord = BoundedLineReader.readLine(vocReader, 5_000_000)) != null) {
+      String expectedWord = BoundedLineReader.readLine(outputReader, 5_000_000);
       Assert.assertNotNull(expectedWord);
       BaseTokenStreamTestCase.checkOneTerm(a, inputWord, expectedWord);
     }
@@ -50,7 +51,7 @@ public class VocabularyAssert {
     BufferedReader vocReader =
         new BufferedReader(new InputStreamReader(vocOut, StandardCharsets.UTF_8));
     String inputLine = null;
-    while ((inputLine = vocReader.readLine()) != null) {
+    while ((inputLine = BoundedLineReader.readLine(vocReader, 5_000_000)) != null) {
       if (inputLine.startsWith("#") || inputLine.trim().length() == 0) continue; /* comment */
       String[] words = inputLine.split("\t");
       BaseTokenStreamTestCase.checkOneTerm(a, words[0], words[1]);

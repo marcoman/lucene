@@ -20,6 +20,7 @@ import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.lang.UProperty;
 import com.ibm.icu.text.UnicodeSet;
 import com.ibm.icu.text.UnicodeSetIterator;
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -113,7 +114,7 @@ public class GenerateUTR30DataFiles {
       boolean verbatim = false;
       int lineNum = 0;
 
-      while (null != (line = bufferedReader.readLine())) {
+      while (null != (line = BoundedLineReader.readLine(bufferedReader, 5_000_000))) {
         ++lineNum;
         if (VERBATIM_RULE_LINE_PATTERN.matcher(line).matches()) {
           verbatim = true;
@@ -176,7 +177,7 @@ public class GenerateUTR30DataFiles {
                 Files.newOutputStream(Path.of(NFC_TXT)), StandardCharsets.UTF_8)) {
       String line;
 
-      while (null != (line = reader.readLine())) {
+      while (null != (line = BoundedLineReader.readLine(reader, 5_000_000))) {
         Matcher matcher = ROUND_TRIP_MAPPING_LINE_PATTERN.matcher(line);
         if (matcher.matches()) {
           final String leftHandSide = matcher.group(1);

@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.benchmark.byTask.tasks;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -165,9 +166,9 @@ public class TestWriteLineDocTask extends BenchmarkTestCase {
     }
     try (BufferedReader br =
         new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
-      String line = br.readLine();
+      String line = BoundedLineReader.readLine(br, 5_000_000);
       assertHeaderLine(line);
-      line = br.readLine();
+      line = BoundedLineReader.readLine(br, 5_000_000);
       assertNotNull(line);
       String[] parts = line.split(Character.toString(WriteLineDocTask.SEP));
       int numExpParts = expBody == null ? 2 : 3;
@@ -177,7 +178,7 @@ public class TestWriteLineDocTask extends BenchmarkTestCase {
       if (expBody != null) {
         assertEquals(expBody, parts[2]);
       }
-      assertNull(br.readLine());
+      assertNull(BoundedLineReader.readLine(br, 5_000_000));
     }
   }
 
@@ -270,9 +271,9 @@ public class TestWriteLineDocTask extends BenchmarkTestCase {
     wldt.close();
 
     try (BufferedReader br = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
-      String line = br.readLine();
+      String line = BoundedLineReader.readLine(br, 5_000_000);
       assertHeaderLine(line);
-      line = br.readLine();
+      line = BoundedLineReader.readLine(br, 5_000_000);
       assertNull(line);
     }
   }
@@ -285,9 +286,9 @@ public class TestWriteLineDocTask extends BenchmarkTestCase {
     wldt.close();
 
     try (BufferedReader br = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
-      String line = br.readLine();
+      String line = BoundedLineReader.readLine(br, 5_000_000);
       assertHeaderLine(line);
-      line = br.readLine();
+      line = BoundedLineReader.readLine(br, 5_000_000);
       assertNotNull(line);
     }
   }
@@ -300,9 +301,9 @@ public class TestWriteLineDocTask extends BenchmarkTestCase {
     wldt.close();
 
     try (BufferedReader br = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
-      String line = br.readLine();
+      String line = BoundedLineReader.readLine(br, 5_000_000);
       assertHeaderLine(line);
-      line = br.readLine();
+      line = BoundedLineReader.readLine(br, 5_000_000);
       assertNotNull(line);
     }
   }
@@ -333,10 +334,10 @@ public class TestWriteLineDocTask extends BenchmarkTestCase {
 
     Set<String> ids = new HashSet<>();
     try (BufferedReader br = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
-      String line = br.readLine();
+      String line = BoundedLineReader.readLine(br, 5_000_000);
       assertHeaderLine(line); // header line is written once, no matter how many threads there are
       for (int i = 0; i < threads.length; i++) {
-        line = br.readLine();
+        line = BoundedLineReader.readLine(br, 5_000_000);
         String[] parts = line.split(Character.toString(WriteLineDocTask.SEP));
         assertEquals(3, parts.length);
         // check that all thread names written are the same in the same line
@@ -346,7 +347,7 @@ public class TestWriteLineDocTask extends BenchmarkTestCase {
         assertEquals(tname, parts[2].substring(parts[2].indexOf('_')));
       }
       // only threads.length lines should exist
-      assertNull(br.readLine());
+      assertNull(BoundedLineReader.readLine(br, 5_000_000));
       assertEquals(threads.length, ids.size());
     }
   }

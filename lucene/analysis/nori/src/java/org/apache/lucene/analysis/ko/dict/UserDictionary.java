@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.analysis.ko.dict;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -53,7 +54,7 @@ public final class UserDictionary implements Dictionary<UserMorphData> {
     List<String> entries = new ArrayList<>();
 
     // text + optional segmentations
-    while ((line = br.readLine()) != null) {
+    while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
       // Remove comments
       line = line.replaceAll("#.*$", "");
 

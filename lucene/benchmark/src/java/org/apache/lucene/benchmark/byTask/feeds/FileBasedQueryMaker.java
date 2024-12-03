@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.benchmark.byTask.feeds;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.Reader;
@@ -78,7 +79,7 @@ public class FileBasedQueryMaker extends AbstractQueryMaker {
           BufferedReader buffered = new BufferedReader(reader);
           String line = null;
           int lineNum = 0;
-          while ((line = buffered.readLine()) != null) {
+          while ((line = BoundedLineReader.readLine(buffered, 5_000_000)) != null) {
             line = line.trim();
             if (line.length() != 0 && !line.startsWith("#")) {
               try {

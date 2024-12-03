@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.spatial;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,7 +48,7 @@ public class SpatialTestData {
     BufferedReader bufInput = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
     try {
       String line;
-      while ((line = bufInput.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(bufInput, 5_000_000)) != null) {
         if (line.length() == 0 || line.charAt(0) == '#') continue;
 
         SpatialTestData data = new SpatialTestData();

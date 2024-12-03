@@ -18,6 +18,7 @@ package org.apache.lucene.search.uhighlight;
 
 import com.carrotsearch.randomizedtesting.annotations.Name;
 import com.carrotsearch.randomizedtesting.annotations.ParametersFactory;
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -388,7 +389,7 @@ public class TestUnifiedHighlighterTermIntervals extends UnifiedHighlighterTestB
         new BufferedReader(
             new InputStreamReader(
                 this.getClass().getResourceAsStream("CambridgeMA.utf8"), StandardCharsets.UTF_8));
-    String text = r.readLine();
+    String text = BoundedLineReader.readLine(r, 5_000_000);
     r.close();
     RandomIndexWriter iw = newIndexOrderPreservingWriter();
     Field body = new Field("body", text, fieldType);

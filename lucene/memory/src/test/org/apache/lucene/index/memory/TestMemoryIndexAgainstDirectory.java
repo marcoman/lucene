@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.index.memory;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,7 +92,7 @@ public class TestMemoryIndexAgainstDirectory extends BaseTokenStreamTestCase {
     BufferedReader reader =
         new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
     String line;
-    while ((line = reader.readLine()) != null) {
+    while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
       line = line.trim();
       if (line.length() > 0 && !line.startsWith("#") && !line.startsWith("//")) {
         queries.add(line);

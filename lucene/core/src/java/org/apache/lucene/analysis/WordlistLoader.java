@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.analysis;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,7 +53,7 @@ public class WordlistLoader {
   public static CharArraySet getWordSet(Reader reader, CharArraySet result) throws IOException {
     try (BufferedReader br = getBufferedReader(reader)) {
       String word = null;
-      while ((word = br.readLine()) != null) {
+      while ((word = BoundedLineReader.readLine(br, 5_000_000)) != null) {
         word = word.trim();
         // skip blank lines
         if (word.isEmpty()) continue;
@@ -118,7 +119,7 @@ public class WordlistLoader {
       throws IOException {
     try (BufferedReader br = getBufferedReader(reader)) {
       String word = null;
-      while ((word = br.readLine()) != null) {
+      while ((word = BoundedLineReader.readLine(br, 5_000_000)) != null) {
         if (word.startsWith(comment) == false) {
           word = word.trim();
           // skip blank lines
@@ -194,7 +195,7 @@ public class WordlistLoader {
       throws IOException {
     try (BufferedReader br = getBufferedReader(reader)) {
       String line = null;
-      while ((line = br.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
         int comment = line.indexOf('|');
         if (comment >= 0) line = line.substring(0, comment);
         String[] words = line.split("\\s+");
@@ -277,7 +278,7 @@ public class WordlistLoader {
       throws IOException {
     try (BufferedReader br = getBufferedReader(reader)) {
       String line;
-      while ((line = br.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
         String[] wordstem = line.split("\t", 2);
         result.put(wordstem[0], wordstem[1]);
       }
@@ -298,7 +299,7 @@ public class WordlistLoader {
     ArrayList<String> lines;
     try (BufferedReader input = getBufferedReader(IOUtils.getDecodingReader(stream, charset))) {
       lines = new ArrayList<>();
-      for (String word = null; (word = input.readLine()) != null; ) {
+      for (String word = null; (word = BoundedLineReader.readLine(input, 5_000_000)) != null; ) {
         // skip initial bom marker
         if (lines.isEmpty() && word.length() > 0 && word.charAt(0) == '\uFEFF')
           word = word.substring(1);

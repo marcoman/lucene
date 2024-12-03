@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.tests.util;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
@@ -193,7 +194,7 @@ public class LineFileDocs implements Closeable {
         skipPoints.add(0L);
 
         while (true) {
-          String line = reader.readLine();
+          String line = BoundedLineReader.readLine(reader, 5_000_000);
           if (line == null) {
             break;
           }
@@ -279,7 +280,7 @@ public class LineFileDocs implements Closeable {
   public Document nextDoc() throws IOException {
     String line;
     synchronized (this) {
-      line = reader.readLine();
+      line = BoundedLineReader.readLine(reader, 5_000_000);
       if (line == null) {
         // Always rewind at end:
         if (LuceneTestCase.VERBOSE) {
@@ -288,7 +289,7 @@ public class LineFileDocs implements Closeable {
         reader.close();
         reader = null;
         open();
-        line = reader.readLine();
+        line = BoundedLineReader.readLine(reader, 5_000_000);
       }
     }
 

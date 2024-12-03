@@ -17,6 +17,7 @@
 
 package org.apache.lucene.luke.models.util.twentynewsgroups;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -65,13 +66,13 @@ public class MessageFilesParser extends SimpleFileVisitor<Path> {
 
   Message parse(Path file) throws IOException {
     try (BufferedReader br = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
-      String line = br.readLine();
+      String line = BoundedLineReader.readLine(br, 5_000_000);
 
       Message message = new Message();
       while (!line.isEmpty()) {
         String[] ary = line.split(":", 2);
         if (ary.length < 2) {
-          line = br.readLine();
+          line = BoundedLineReader.readLine(br, 5_000_000);
           continue;
         }
         String att = ary[0].trim();
@@ -107,14 +108,14 @@ public class MessageFilesParser extends SimpleFileVisitor<Path> {
             break;
         }
 
-        line = br.readLine();
+        line = BoundedLineReader.readLine(br, 5_000_000);
       }
 
       StringBuilder sb = new StringBuilder();
       while (line != null) {
         sb.append(line);
         sb.append(" ");
-        line = br.readLine();
+        line = BoundedLineReader.readLine(br, 5_000_000);
       }
       message.setBody(sb.toString());
 

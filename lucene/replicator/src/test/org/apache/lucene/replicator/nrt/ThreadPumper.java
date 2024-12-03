@@ -17,6 +17,7 @@
 
 package org.apache.lucene.replicator.nrt;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -40,7 +41,7 @@ class ThreadPumper {
               long startTimeNS = System.nanoTime();
               Pattern logTimeStart = Pattern.compile("^[0-9\\.]+s .*");
               String line;
-              while ((line = from.readLine()) != null) {
+              while ((line = BoundedLineReader.readLine(from, 5_000_000)) != null) {
                 if (toFile != null) {
                   toFile.write(line);
                   toFile.write("\n");

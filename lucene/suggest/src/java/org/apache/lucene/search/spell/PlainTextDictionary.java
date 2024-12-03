@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.search.spell;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,7 +83,7 @@ public class PlainTextDictionary implements Dictionary {
       BytesRef result;
       try {
         String line;
-        if ((line = in.readLine()) != null) {
+        if ((line = BoundedLineReader.readLine(in, 5_000_000)) != null) {
           spare.copyChars(line);
           result = spare.get();
         } else {

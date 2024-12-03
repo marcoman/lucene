@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.queryparser.xml;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
@@ -46,7 +47,7 @@ class CoreParserTestIndexData implements Closeable {
                 StandardCharsets.US_ASCII));
     dir = LuceneTestCase.newDirectory();
     IndexWriter writer = new IndexWriter(dir, LuceneTestCase.newIndexWriterConfig(analyzer));
-    String line = d.readLine();
+    String line = BoundedLineReader.readLine(d, 5_000_000);
     while (line != null) {
       int endOfDate = line.indexOf('\t');
       String date = line.substring(0, endOfDate).trim();
@@ -56,7 +57,7 @@ class CoreParserTestIndexData implements Closeable {
       doc.add(LuceneTestCase.newTextField("contents", content, Field.Store.YES));
       doc.add(new IntPoint("date3", Integer.parseInt(date)));
       writer.addDocument(doc);
-      line = d.readLine();
+      line = BoundedLineReader.readLine(d, 5_000_000);
     }
     d.close();
     writer.close();

@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.analysis.standard;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -153,7 +154,7 @@ public class GenerateJflexTLDMacros {
         new BufferedReader(
             new InputStreamReader(connection.getInputStream(), StandardCharsets.US_ASCII))) {
       String line;
-      while (null != (line = reader.readLine())) {
+      while (null != (line = BoundedLineReader.readLine(reader, 5_000_000))) {
         if (line.startsWith("#")) {
           continue;
         }

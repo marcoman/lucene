@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.analysis.ja.completion;
 
+import io.github.pixee.security.BoundedLineReader;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.BufferedReader;
@@ -49,7 +50,7 @@ public class KatakanaRomanizer {
         BufferedReader ir = new BufferedReader(is)) {
       Map<CharsRef, List<CharsRef>> romajiMap = new HashMap<>();
       String line;
-      while ((line = ir.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(ir, 5_000_000)) != null) {
         if (line.startsWith("#")) {
           continue;
         }

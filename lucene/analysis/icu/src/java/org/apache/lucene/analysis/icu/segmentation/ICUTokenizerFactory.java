@@ -20,6 +20,7 @@ import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.lang.UProperty;
 import com.ibm.icu.text.BreakIterator;
 import com.ibm.icu.text.RuleBasedBreakIterator;
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -140,7 +141,7 @@ public class ICUTokenizerFactory extends TokenizerFactory implements ResourceLoa
     BufferedReader reader =
         new BufferedReader(IOUtils.getDecodingReader(rulesStream, StandardCharsets.UTF_8));
     String line = null;
-    while ((line = reader.readLine()) != null) {
+    while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
       if (!line.startsWith("#")) {
         rules.append(line);
       }

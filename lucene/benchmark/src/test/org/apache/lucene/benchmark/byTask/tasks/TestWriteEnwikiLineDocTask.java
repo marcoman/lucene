@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.benchmark.byTask.tasks;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -71,10 +72,10 @@ public class TestWriteEnwikiLineDocTask extends BenchmarkTestCase {
   private void doReadTest(int n, Path file, String expTitle, String expDate, String expBody)
       throws Exception {
     try (BufferedReader br = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
-      String line = br.readLine();
+      String line = BoundedLineReader.readLine(br, 5_000_000);
       TestWriteLineDocTask.assertHeaderLine(line);
       for (int i = 0; i < n; i++) {
-        line = br.readLine();
+        line = BoundedLineReader.readLine(br, 5_000_000);
         assertNotNull(line);
         String[] parts = line.split(Character.toString(WriteLineDocTask.SEP));
         int numExpParts = expBody == null ? 2 : 3;
@@ -85,7 +86,7 @@ public class TestWriteEnwikiLineDocTask extends BenchmarkTestCase {
           assertEquals(expBody, parts[2]);
         }
       }
-      assertNull(br.readLine());
+      assertNull(BoundedLineReader.readLine(br, 5_000_000));
     }
   }
 

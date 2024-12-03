@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.benchmark.byTask.utils;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -68,7 +69,7 @@ public class Config {
     ArrayList<String> lines = new ArrayList<>();
     BufferedReader r = new BufferedReader(algReader);
     int lastConfigLine = 0;
-    for (String line = r.readLine(); line != null; line = r.readLine()) {
+    for (String line = BoundedLineReader.readLine(r, 5_000_000); line != null; line = BoundedLineReader.readLine(r, 5_000_000)) {
       lines.add(line);
       if (line.indexOf('=') > 0) {
         lastConfigLine = lines.size();

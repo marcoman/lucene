@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.util.fst;
 
+import io.github.pixee.security.BoundedLineReader;
 import static org.apache.lucene.tests.util.fst.FSTTester.getRandomString;
 import static org.apache.lucene.tests.util.fst.FSTTester.simpleRandomString;
 import static org.apache.lucene.tests.util.fst.FSTTester.toIntsRef;
@@ -545,7 +546,7 @@ public class TestFSTs extends LuceneTestCase {
         long tStart = System.nanoTime();
         int ord = 0;
         while (true) {
-          String w = is.readLine();
+          String w = BoundedLineReader.readLine(is, 5_000_000);
           if (w == null) {
             break;
           }
@@ -611,7 +612,7 @@ public class TestFSTs extends LuceneTestCase {
         ord = 0;
         tStart = System.nanoTime();
         while (true) {
-          String w = is.readLine();
+          String w = BoundedLineReader.readLine(is, 5_000_000);
           if (w == null) {
             break;
           }

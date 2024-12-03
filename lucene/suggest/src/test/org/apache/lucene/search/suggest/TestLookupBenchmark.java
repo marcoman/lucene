@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.search.suggest;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
@@ -97,7 +98,7 @@ public class TestLookupBenchmark extends LuceneTestCase {
 
     String line;
     BufferedReader br = new BufferedReader(new InputStreamReader(resource.openStream(), UTF_8));
-    while ((line = br.readLine()) != null) {
+    while ((line = BoundedLineReader.readLine(br, 5_000_000)) != null) {
       int tab = line.indexOf('|');
       assertTrue("No | separator?: " + line, tab >= 0);
       int weight = Integer.parseInt(line.substring(tab + 1));

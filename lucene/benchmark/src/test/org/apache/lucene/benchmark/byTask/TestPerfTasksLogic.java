@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.benchmark.byTask;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -300,7 +301,7 @@ public class TestPerfTasksLogic extends BenchmarkTestCase {
     BufferedReader r = Files.newBufferedReader(lineFile, StandardCharsets.UTF_8);
     int numLines = 0;
     String line;
-    while ((line = r.readLine()) != null) {
+    while ((line = BoundedLineReader.readLine(r, 5_000_000)) != null) {
       if (numLines == 0 && line.startsWith(WriteLineDocTask.FIELDS_HEADER_INDICATOR)) {
         continue; // do not count the header line as a doc
       }

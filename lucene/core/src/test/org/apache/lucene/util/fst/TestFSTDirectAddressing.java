@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.util.fst;
 
+import io.github.pixee.security.BoundedLineReader;
 import static org.apache.lucene.util.fst.FST.readMetadata;
 
 import java.io.BufferedReader;
@@ -256,7 +257,7 @@ public class TestFSTDirectAddressing extends LuceneTestCase {
     List<BytesRef> wordList = new ArrayList<>();
     try (BufferedReader reader = Files.newBufferedReader(Paths.get(wordsFilePath))) {
       while (wordList.size() < MAX_NUM_WORDS) {
-        String word = reader.readLine();
+        String word = BoundedLineReader.readLine(reader, 5_000_000);
         if (word == null) {
           break;
         }

@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.analysis.icu;
 
+import io.github.pixee.security.BoundedLineReader;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.ibm.icu.text.RuleBasedBreakIterator;
@@ -40,7 +41,7 @@ public class RBBIRuleCompiler {
     InputStream in = Files.newInputStream(ruleFile);
     BufferedReader cin = new BufferedReader(new InputStreamReader(in, UTF_8));
     String line;
-    while ((line = cin.readLine()) != null) {
+    while ((line = BoundedLineReader.readLine(cin, 5_000_000)) != null) {
       if (!line.startsWith("#")) {
         rules.append(line);
       }

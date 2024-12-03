@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.search.suggest;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -125,7 +126,7 @@ public class FileDictionary implements Dictionary {
     private boolean hasPayloads = false;
 
     private FileIterator() throws IOException {
-      line = in.readLine();
+      line = BoundedLineReader.readLine(in, 5_000_000);
       if (line == null) {
         done = true;
         IOUtils.close(in);
@@ -162,7 +163,7 @@ public class FileDictionary implements Dictionary {
         isFirstLine = false;
         return spare.get();
       }
-      line = in.readLine();
+      line = BoundedLineReader.readLine(in, 5_000_000);
       if (line != null) {
         String[] fields = line.split(fieldDelimiter);
         if (fields.length > 3) {

@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.benchmark.quality.trec;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class Trec1MQReader {
     ArrayList<QualityQuery> res = new ArrayList<>();
     String line;
     try {
-      while (null != (line = reader.readLine())) {
+      while (null != (line = BoundedLineReader.readLine(reader, 5_000_000))) {
         line = line.trim();
         if (line.startsWith("#")) {
           continue;

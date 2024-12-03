@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.spatial;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,7 +51,7 @@ public class SpatialTestQuery {
     BufferedReader bufInput = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
     try {
       String line;
-      for (int lineNumber = 1; (line = bufInput.readLine()) != null; lineNumber++) {
+      for (int lineNumber = 1; (line = BoundedLineReader.readLine(bufInput, 5_000_000)) != null; lineNumber++) {
         SpatialTestQuery test = new SpatialTestQuery();
         test.line = line;
         test.lineNumber = lineNumber;

@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.analysis.email;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -520,7 +521,7 @@ public class TestUAX29URLEmailTokenizer extends BaseTokenStreamTestCase {
                   getClass().getResourceAsStream("LuceneResourcesWikiPageURLs.txt"),
                   StandardCharsets.UTF_8));
       String line;
-      while (null != (line = bufferedReader.readLine())) {
+      while (null != (line = BoundedLineReader.readLine(bufferedReader, 5_000_000))) {
         line = line.trim();
         if (line.length() > 0) {
           urlList.add(line);
@@ -569,7 +570,7 @@ public class TestUAX29URLEmailTokenizer extends BaseTokenStreamTestCase {
                           "email.addresses.from.random.text.with.email.addresses.txt"),
                   StandardCharsets.UTF_8));
       String line;
-      while (null != (line = bufferedReader.readLine())) {
+      while (null != (line = BoundedLineReader.readLine(bufferedReader, 5_000_000))) {
         line = line.trim();
         if (line.length() > 0) {
           emailList.add(line);
@@ -660,7 +661,7 @@ public class TestUAX29URLEmailTokenizer extends BaseTokenStreamTestCase {
                   getClass().getResourceAsStream("urls.from.random.text.with.urls.txt"),
                   StandardCharsets.UTF_8));
       String line;
-      while (null != (line = bufferedReader.readLine())) {
+      while (null != (line = BoundedLineReader.readLine(bufferedReader, 5_000_000))) {
         line = line.trim();
         if (line.length() > 0) {
           urlList.add(line);

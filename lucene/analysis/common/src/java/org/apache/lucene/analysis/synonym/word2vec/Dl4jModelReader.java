@@ -17,6 +17,7 @@
 
 package org.apache.lucene.analysis.synonym.word2vec;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -61,13 +62,13 @@ public class Dl4jModelReader implements Closeable {
         BufferedReader reader =
             new BufferedReader(new InputStreamReader(word2VecModelZipFile, StandardCharsets.UTF_8));
 
-        String header = reader.readLine();
+        String header = BoundedLineReader.readLine(reader, 5_000_000);
         String[] headerValues = header.split(" ");
         int dictionarySize = Integer.parseInt(headerValues[0]);
         int vectorDimension = Integer.parseInt(headerValues[1]);
 
         Word2VecModel model = new Word2VecModel(dictionarySize, vectorDimension);
-        String line = reader.readLine();
+        String line = BoundedLineReader.readLine(reader, 5_000_000);
         boolean isTermB64Encoded = false;
         if (line != null) {
           String[] tokens = line.split(" ");
@@ -75,7 +76,7 @@ public class Dl4jModelReader implements Closeable {
               tokens[0].substring(0, 3).toLowerCase(Locale.ROOT).compareTo("b64") == 0;
           model.addTermAndVector(extractTermAndVector(tokens, vectorDimension, isTermB64Encoded));
         }
-        while ((line = reader.readLine()) != null) {
+        while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
           String[] tokens = line.split(" ");
           model.addTermAndVector(extractTermAndVector(tokens, vectorDimension, isTermB64Encoded));
         }

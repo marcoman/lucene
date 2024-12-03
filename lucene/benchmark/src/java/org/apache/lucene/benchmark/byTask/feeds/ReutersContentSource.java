@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.benchmark.byTask.feeds;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -134,13 +135,13 @@ public class ReutersContentSource extends ContentSource {
 
     try (BufferedReader reader = Files.newBufferedReader(f, StandardCharsets.UTF_8)) {
       // First line is the date, 3rd is the title, rest is body
-      String dateStr = reader.readLine();
-      reader.readLine(); // skip an empty line
-      String title = reader.readLine();
-      reader.readLine(); // skip an empty line
+      String dateStr = BoundedLineReader.readLine(reader, 5_000_000);
+      BoundedLineReader.readLine(reader, 5_000_000); // skip an empty line
+      String title = BoundedLineReader.readLine(reader, 5_000_000);
+      BoundedLineReader.readLine(reader, 5_000_000); // skip an empty line
       StringBuilder bodyBuf = new StringBuilder(1024);
       String line = null;
-      while ((line = reader.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
         bodyBuf.append(line).append(' ');
       }
 

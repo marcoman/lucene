@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.benchmark.byTask.utils;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -126,7 +127,7 @@ public class TestStreamUtils extends BenchmarkTestCase {
     InputStream ir = StreamUtils.inputStream(f);
     InputStreamReader in = new InputStreamReader(ir, StandardCharsets.UTF_8);
     BufferedReader r = new BufferedReader(in);
-    String line = r.readLine();
+    String line = BoundedLineReader.readLine(r, 5_000_000);
     assertEquals("Wrong text found in " + f.getFileName(), TEXT, line);
     r.close();
   }

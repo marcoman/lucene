@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.analysis.hunspell;
 
+import io.github.pixee.security.BoundedLineReader;
 import static org.apache.lucene.analysis.hunspell.AffixKind.PREFIX;
 import static org.apache.lucene.analysis.hunspell.AffixKind.SUFFIX;
 
@@ -1006,10 +1007,10 @@ public class Dictionary {
     StringBuilder sb = new StringBuilder();
     for (InputStream dictionary : dictionaries) {
       BufferedReader lines = new BufferedReader(new InputStreamReader(dictionary, decoder));
-      lines.readLine(); // first line is number of entries (approximately, sometimes)
+      BoundedLineReader.readLine(lines, 5_000_000); // first line is number of entries (approximately, sometimes)
 
       String line;
-      while ((line = lines.readLine()) != null) {
+      while ((line = BoundedLineReader.readLine(lines, 5_000_000)) != null) {
         // wild and unpredictable code comment rules
         if (line.isEmpty() || line.charAt(0) == '#' || line.charAt(0) == '\t') {
           continue;

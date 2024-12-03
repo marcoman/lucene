@@ -16,6 +16,7 @@
  */
 package org.apache.lucene.analysis.ko.dict;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -64,7 +65,7 @@ class TokenInfoDictionaryBuilder {
     for (Path path : csvFiles) {
       try (BufferedReader reader = Files.newBufferedReader(path, Charset.forName(encoding))) {
         String line;
-        while ((line = reader.readLine()) != null) {
+        while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
           String[] entry = CSVUtil.parse(line);
 
           if (entry.length < 12) {
