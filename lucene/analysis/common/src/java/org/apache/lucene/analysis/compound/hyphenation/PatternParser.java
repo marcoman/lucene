@@ -254,19 +254,19 @@ public class PatternParser extends DefaultHandler {
    */
   @Override
   public void startElement(String uri, String local, String raw, Attributes attrs) {
-    if (local.equals("hyphen-char")) {
+    if ("hyphen-char".equals(local)) {
       String h = attrs.getValue("value");
       if (h != null && h.length() == 1) {
         hyphenChar = h.charAt(0);
       }
-    } else if (local.equals("classes")) {
+    } else if ("classes".equals(local)) {
       currElement = ELEM_CLASSES;
-    } else if (local.equals("patterns")) {
+    } else if ("patterns".equals(local)) {
       currElement = ELEM_PATTERNS;
-    } else if (local.equals("exceptions")) {
+    } else if ("exceptions".equals(local)) {
       currElement = ELEM_EXCEPTIONS;
       exception = new ArrayList<>();
-    } else if (local.equals("hyphen")) {
+    } else if ("hyphen".equals(local)) {
       if (token.length() > 0) {
         exception.add(token.toString());
       }

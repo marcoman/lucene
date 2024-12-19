@@ -243,7 +243,7 @@ public final class SegmentInfos implements Cloneable, Iterable<SegmentCommitInfo
 
   /** Parse the generation off the segments file name and return it. */
   public static long generationFromSegmentsFileName(String fileName) {
-    if (fileName.equals(OLD_SEGMENTS_GEN)) {
+    if (OLD_SEGMENTS_GEN.equals(fileName)) {
       throw new IllegalArgumentException(
           "\"" + OLD_SEGMENTS_GEN + "\" is not a valid segment file name since 4.0");
     } else if (fileName.equals(IndexFileNames.SEGMENTS)) {

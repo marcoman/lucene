@@ -72,7 +72,7 @@ public final class SnowballFilter extends TokenFilter {
     Objects.requireNonNull(name, "name");
     // it was called "German2" for eons, but snowball folded it into "German" and deleted "German2"
     // for now, don't annoy our users...
-    if (name.equals("German2")) {
+    if ("German2".equals(name)) {
       name = "German";
     }
     // Class.forName is frowned upon in place of the ResourceLoader but in this case,

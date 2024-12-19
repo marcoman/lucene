@@ -79,7 +79,7 @@ class SimpleGeoJSONPolygonParser {
       throw newParseException("did not see type: Polygon or MultiPolygon");
     }
 
-    if (polyType.equals("Polygon")) {
+    if ("Polygon".equals(polyType)) {
       return new Polygon[] {parsePolygon(coordinates)};
     } else {
       List<Polygon> polygons = new ArrayList<>();
@@ -122,7 +122,7 @@ class SimpleGeoJSONPolygonParser {
       int uptoStart = upto;
       String key = parseString();
 
-      if (path.equals("crs.properties") && key.equals("href")) {
+      if ("crs.properties".equals(path) && "href".equals(key)) {
         upto = uptoStart;
         throw newParseException("cannot handle linked crs");
       }
@@ -171,7 +171,7 @@ class SimpleGeoJSONPolygonParser {
         throw newParseException("expected array, object, string or literal value, but got: " + ch);
       }
 
-      if (path.equals("crs.properties") && key.equals("name")) {
+      if ("crs.properties".equals(path) && "name".equals(key)) {
         if (o instanceof String == false) {
           upto = uptoStart;
           throw newParseException("crs.properties.name should be a string, but saw: " + o);
@@ -183,18 +183,18 @@ class SimpleGeoJSONPolygonParser {
         }
       }
 
-      if (key.equals("type") && path.startsWith("crs") == false) {
+      if ("type".equals(key) && path.startsWith("crs") == false) {
         if (o instanceof String == false) {
           upto = uptoStart;
           throw newParseException("type should be a string, but got: " + o);
         }
         String type = (String) o;
-        if (type.equals("Polygon") && isValidGeometryPath(path)) {
+        if ("Polygon".equals(type) && isValidGeometryPath(path)) {
           polyType = "Polygon";
-        } else if (type.equals("MultiPolygon") && isValidGeometryPath(path)) {
+        } else if ("MultiPolygon".equals(type) && isValidGeometryPath(path)) {
           polyType = "MultiPolygon";
-        } else if ((type.equals("FeatureCollection") || type.equals("Feature"))
-            && (path.equals("features.[]") || path.isEmpty())) {
+        } else if (("FeatureCollection".equals(type) || "Feature".equals(type))
+            && ("features.[]".equals(path) || path.isEmpty())) {
           // OK, we recurse
         } else {
           upto = uptoStart;
@@ -202,7 +202,7 @@ class SimpleGeoJSONPolygonParser {
               "can only handle type FeatureCollection (if it has a single polygon geometry), Feature, Polygon or MultiPolygon, but got "
                   + type);
         }
-      } else if (key.equals("coordinates") && isValidGeometryPath(path)) {
+      } else if ("coordinates".equals(key) && isValidGeometryPath(path)) {
         if (o instanceof List == false) {
           upto = uptoStart;
           throw newParseException("coordinates should be an array, but got: " + o.getClass());
@@ -220,7 +220,7 @@ class SimpleGeoJSONPolygonParser {
 
   /** Returns true if the object path is a valid location to see a Multi/Polygon geometry */
   private boolean isValidGeometryPath(String path) {
-    return path.isEmpty() || path.equals("geometry") || path.equals("features.[].geometry");
+    return path.isEmpty() || "geometry".equals(path) || "features.[].geometry".equals(path);
   }
 
   private Polygon parsePolygon(List<Object> coordinates) throws ParseException {

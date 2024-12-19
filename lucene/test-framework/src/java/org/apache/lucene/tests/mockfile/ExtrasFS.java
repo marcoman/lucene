@@ -82,6 +82,6 @@ public class ExtrasFS extends FilterFileSystemProvider {
    * @return Return true if {@code fileName} is one of the extra files added by this class.
    */
   public static boolean isExtra(String fileName) {
-    return fileName.equals(EXTRA_FILE_NAME);
+    return EXTRA_FILE_NAME.equals(fileName);
   }
 }

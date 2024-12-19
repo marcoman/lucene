@@ -112,13 +112,13 @@ public class ExtractWikipedia {
     boolean keepImageOnlyDocs = true;
     for (int i = 0; i < args.length; i++) {
       String arg = args[i];
-      if (arg.equals("--input") || arg.equals("-i")) {
+      if ("--input".equals(arg) || "-i".equals(arg)) {
         wikipedia = Paths.get(args[i + 1]);
         i++;
-      } else if (arg.equals("--output") || arg.equals("-o")) {
+      } else if ("--output".equals(arg) || "-o".equals(arg)) {
         outputDir = Paths.get(args[i + 1]);
         i++;
-      } else if (arg.equals("--discardImageOnlyDocs") || arg.equals("-d")) {
+      } else if ("--discardImageOnlyDocs".equals(arg) || "-d".equals(arg)) {
         keepImageOnlyDocs = false;
       }
     }

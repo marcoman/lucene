@@ -43,7 +43,7 @@ public class NewAnalyzerTask extends PerfTask {
   public static final Analyzer createAnalyzer(String className) throws Exception {
     final Class<? extends Analyzer> clazz = Class.forName(className).asSubclass(Analyzer.class);
     Constructor<? extends Analyzer> cnstr;
-    if (className.equals("org.apache.lucene.analysis.core.StopAnalyzer")) {
+    if ("org.apache.lucene.analysis.core.StopAnalyzer".equals(className)) {
       cnstr = clazz.getConstructor(CharArraySet.class);
       return cnstr.newInstance(CharArraySet.EMPTY_SET);
     }

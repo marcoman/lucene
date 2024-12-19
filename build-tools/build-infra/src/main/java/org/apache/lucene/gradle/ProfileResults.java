@@ -104,11 +104,11 @@ public class ProfileResults {
     String name = event.getEventType().getName();
     switch (mode) {
       case "cpu":
-        return (name.equals("jdk.ExecutionSample") || name.equals("jdk.NativeMethodSample"))
+        return ("jdk.ExecutionSample".equals(name) || "jdk.NativeMethodSample".equals(name))
             && !isGradlePollThread(event.getThread("sampledThread"));
       case "heap":
-        return (name.equals("jdk.ObjectAllocationInNewTLAB")
-                || name.equals("jdk.ObjectAllocationOutsideTLAB"))
+        return ("jdk.ObjectAllocationInNewTLAB".equals(name)
+                || "jdk.ObjectAllocationOutsideTLAB".equals(name))
             && !isGradlePollThread(event.getThread("eventThread"));
       default:
         throw new UnsupportedOperationException(event.toString());

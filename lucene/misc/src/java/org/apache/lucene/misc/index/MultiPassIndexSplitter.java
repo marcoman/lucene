@@ -132,11 +132,11 @@ public class MultiPassIndexSplitter {
     int numParts = -1;
     boolean seq = false;
     for (int i = 0; i < args.length; i++) {
-      if (args[i].equals("-out")) {
+      if ("-out".equals(args[i])) {
         outDir = args[++i];
-      } else if (args[i].equals("-num")) {
+      } else if ("-num".equals(args[i])) {
         numParts = Integer.parseInt(args[++i]);
-      } else if (args[i].equals("-seq")) {
+      } else if ("-seq".equals(args[i])) {
         seq = true;
       } else {
         Path file = Paths.get(args[i]);

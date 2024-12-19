@@ -63,9 +63,9 @@ public class IndexSplitter {
     if (!Files.exists(srcDir)) {
       throw new Exception("srcdir:" + srcDir.toAbsolutePath() + " doesn't exist");
     }
-    if (args[1].equals("-l")) {
+    if ("-l".equals(args[1])) {
       is.listSegments();
-    } else if (args[1].equals("-d")) {
+    } else if ("-d".equals(args[1])) {
       is.remove(ArrayUtil.copyOfSubArray(args, 2, args.length));
     } else {
       Path targetDir = Paths.get(args[1]);

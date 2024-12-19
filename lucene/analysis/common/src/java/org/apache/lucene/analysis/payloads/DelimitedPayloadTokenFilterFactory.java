@@ -72,11 +72,11 @@ public class DelimitedPayloadTokenFilterFactory extends TokenFilterFactory
 
   @Override
   public void inform(ResourceLoader loader) {
-    if (encoderClass.equals("float")) {
+    if ("float".equals(encoderClass)) {
       encoder = new FloatEncoder();
-    } else if (encoderClass.equals("integer")) {
+    } else if ("integer".equals(encoderClass)) {
       encoder = new IntegerEncoder();
-    } else if (encoderClass.equals("identity")) {
+    } else if ("identity".equals(encoderClass)) {
       encoder = new IdentityEncoder();
     } else {
       encoder = loader.newInstance(encoderClass, PayloadEncoder.class);

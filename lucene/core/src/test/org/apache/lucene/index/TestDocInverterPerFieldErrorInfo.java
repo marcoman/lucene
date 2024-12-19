@@ -47,7 +47,7 @@ public class TestDocInverterPerFieldErrorInfo extends LuceneTestCase {
     @Override
     protected TokenStreamComponents createComponents(String fieldName) {
       Tokenizer tokenizer = new MockTokenizer();
-      if (fieldName.equals("distinctiveFieldName")) {
+      if ("distinctiveFieldName".equals(fieldName)) {
         TokenFilter tosser =
             new TokenFilter(tokenizer) {
               @Override

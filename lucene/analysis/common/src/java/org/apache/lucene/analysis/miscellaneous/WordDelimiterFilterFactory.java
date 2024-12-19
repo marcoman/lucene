@@ -184,12 +184,12 @@ public class WordDelimiterFilterFactory extends TokenFilterFactory implements Re
   }
 
   private Byte parseType(String s) {
-    if (s.equals("LOWER")) return LOWER;
-    else if (s.equals("UPPER")) return UPPER;
-    else if (s.equals("ALPHA")) return ALPHA;
-    else if (s.equals("DIGIT")) return DIGIT;
-    else if (s.equals("ALPHANUM")) return ALPHANUM;
-    else if (s.equals("SUBWORD_DELIM")) return SUBWORD_DELIM;
+    if ("LOWER".equals(s)) return LOWER;
+    else if ("UPPER".equals(s)) return UPPER;
+    else if ("ALPHA".equals(s)) return ALPHA;
+    else if ("DIGIT".equals(s)) return DIGIT;
+    else if ("ALPHANUM".equals(s)) return ALPHANUM;
+    else if ("SUBWORD_DELIM".equals(s)) return SUBWORD_DELIM;
     else return null;
   }
 

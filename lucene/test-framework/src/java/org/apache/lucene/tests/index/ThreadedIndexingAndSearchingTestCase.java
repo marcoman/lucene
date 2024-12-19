@@ -408,7 +408,7 @@ public abstract class ThreadedIndexingAndSearchingTestCase extends LuceneTestCas
                       assertNotNull(diagnostics);
                       String source = diagnostics.get("source");
                       assertNotNull(source);
-                      if (source.equals("merge")) {
+                      if ("merge".equals(source)) {
                         assertTrue(
                             "sub reader "
                                 + sub

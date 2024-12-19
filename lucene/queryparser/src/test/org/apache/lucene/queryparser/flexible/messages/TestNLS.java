@@ -27,7 +27,7 @@ public class TestNLS extends LuceneTestCase {
      * if the default locale is ja, you get ja as a fallback:
      * see ResourceBundle.html#getBundle(java.lang.String, java.util.Locale, java.lang.ClassLoader)
      */
-    if (!Locale.getDefault().getLanguage().equals("ja"))
+    if (!"ja".equals(Locale.getDefault().getLanguage()))
       assertEquals("Syntax Error: XXX", invalidSyntax.getLocalizedMessage(Locale.ENGLISH));
   }
 
@@ -44,7 +44,7 @@ public class TestNLS extends LuceneTestCase {
      * if the default locale is ja, you get ja as a fallback:
      * see ResourceBundle.html#getBundle(java.lang.String, java.util.Locale, java.lang.ClassLoader)
      */
-    if (!Locale.getDefault().getLanguage().equals("ja"))
+    if (!"ja".equals(Locale.getDefault().getLanguage()))
       assertEquals("Truncated unicode escape sequence.", message);
 
     message =
@@ -53,7 +53,7 @@ public class TestNLS extends LuceneTestCase {
      * if the default locale is ja, you get ja as a fallback:
      * see ResourceBundle.html#getBundle(java.lang.String, java.util.Locale, java.lang.ClassLoader)
      */
-    if (!Locale.getDefault().getLanguage().equals("ja")) assertEquals("Syntax Error: XXX", message);
+    if (!"ja".equals(Locale.getDefault().getLanguage())) assertEquals("Syntax Error: XXX", message);
   }
 
   public void testNLSLoading_ja() {
@@ -76,7 +76,7 @@ public class TestNLS extends LuceneTestCase {
      * if the default locale is ja, you get ja as a fallback:
      * see ResourceBundle.html#getBundle(java.lang.String, java.util.Locale, java.lang.ClassLoader)
      */
-    if (!Locale.getDefault().getLanguage().equals("ja"))
+    if (!"ja".equals(Locale.getDefault().getLanguage()))
       assertEquals("Truncated unicode escape sequence.", message);
 
     message = NLS.getLocalizedMessage(MessagesTestBundle.Q0001E_INVALID_SYNTAX, locale, "XXX");
@@ -84,7 +84,7 @@ public class TestNLS extends LuceneTestCase {
      * if the default locale is ja, you get ja as a fallback:
      * see ResourceBundle.html#getBundle(java.lang.String, java.util.Locale, java.lang.ClassLoader)
      */
-    if (!Locale.getDefault().getLanguage().equals("ja")) assertEquals("Syntax Error: XXX", message);
+    if (!"ja".equals(Locale.getDefault().getLanguage())) assertEquals("Syntax Error: XXX", message);
   }
 
   public void testMissingMessage() {

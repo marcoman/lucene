@@ -3749,7 +3749,7 @@ public class TestIndexWriter extends LuceneTestCase {
 
   private static void assertFiles(IndexWriter writer) throws IOException {
     Predicate<String> filter =
-        file -> file.startsWith("segments") == false && file.equals("write.lock") == false;
+        file -> file.startsWith("segments") == false && "write.lock".equals(file) == false;
     // remove segment files we don't know if we have committed and what is kept around
     Set<String> segFiles =
         new HashSet<>(writer.cloneSegmentInfos().files(true))

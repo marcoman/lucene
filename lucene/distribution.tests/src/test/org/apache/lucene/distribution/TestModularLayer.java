@@ -337,7 +337,7 @@ public class TestModularLayer extends AbstractLuceneDistributionTest {
       Set<String> jarPackages = getJarPackages(module, entry -> true);
       Set<ModuleDescriptor.Exports> moduleExports = new HashSet<>(module.descriptor().exports());
 
-      if (module.descriptor().name().equals("org.apache.lucene.luke")) {
+      if ("org.apache.lucene.luke".equals(module.descriptor().name())) {
         jarPackages.removeIf(
             entry -> {
               // Luke's packages are not exported.
@@ -345,7 +345,7 @@ public class TestModularLayer extends AbstractLuceneDistributionTest {
             });
       }
 
-      if (module.descriptor().name().equals("org.apache.lucene.core")) {
+      if ("org.apache.lucene.core".equals(module.descriptor().name())) {
         // Internal packages should not be exported to unqualified targets.
         jarPackages.removeIf(entry -> entry.startsWith("org.apache.lucene.internal"));
 
@@ -353,7 +353,7 @@ public class TestModularLayer extends AbstractLuceneDistributionTest {
         moduleExports.removeIf(
             export -> {
               boolean isInternal = export.source().startsWith("org.apache.lucene.internal");
-              if (isInternal && export.source().equals("org.apache.lucene.internal.hppc")) {
+              if (isInternal && "org.apache.lucene.internal.hppc".equals(export.source())) {
                 return true;
               }
               if (isInternal) {

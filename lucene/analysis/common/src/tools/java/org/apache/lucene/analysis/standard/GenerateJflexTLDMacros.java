@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 public class GenerateJflexTLDMacros {
 
   public static void main(String... args) throws Exception {
-    if (args.length != 3 || args[0].equals("--help") || args[0].equals("-help")) {
+    if (args.length != 3 || "--help".equals(args[0]) || "-help".equals(args[0])) {
       System.err.println("Cmd line params:");
       System.err.println(
           "  java "

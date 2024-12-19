@@ -193,7 +193,7 @@ public class TestIndexWriterConfig extends LuceneTestCase {
         // toString.
         continue;
       }
-      if (f.getName().equals("inUseByIndexWriter")) {
+      if ("inUseByIndexWriter".equals(f.getName())) {
         continue;
       }
       assertTrue(f.getName() + " not found in toString", str.indexOf(f.getName()) != -1);

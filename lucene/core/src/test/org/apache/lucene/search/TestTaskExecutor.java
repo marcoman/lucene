@@ -316,7 +316,7 @@ public class TestTaskExecutor extends LuceneTestCase {
       Throwable[] suppressed = exc.getSuppressed();
 
       assertEquals(1, suppressed.length);
-      if (exc.getMessage().equals("exception A")) {
+      if ("exception A".equals(exc.getMessage())) {
         assertEquals("exception B", suppressed[0].getMessage());
       } else {
         assertEquals("exception A", suppressed[0].getMessage());

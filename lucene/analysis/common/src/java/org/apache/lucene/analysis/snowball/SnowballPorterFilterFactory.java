@@ -62,7 +62,7 @@ public class SnowballPorterFilterFactory extends TokenFilterFactory implements R
     String lang = get(args, "language", "English");
     // it was called "German2" for eons, but snowball folded it into "German" and deleted "German2"
     // for now, don't annoy our users...
-    if (lang.equals("German2")) {
+    if ("German2".equals(lang)) {
       lang = "German";
     }
     language = lang;

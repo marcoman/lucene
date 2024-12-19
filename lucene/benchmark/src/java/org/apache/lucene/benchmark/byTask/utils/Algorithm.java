@@ -173,7 +173,7 @@ public class Algorithm implements AutoCloseable {
                 } else {
                   double num = stok.nval;
                   stok.nextToken();
-                  if (stok.ttype == StreamTokenizer.TT_WORD && stok.sval.equals("s")) {
+                  if (stok.ttype == StreamTokenizer.TT_WORD && "s".equals(stok.sval)) {
                     ((TaskSequence) prevTask).setRunTime(num);
                   } else {
                     stok.pushBack();

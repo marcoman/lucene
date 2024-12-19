@@ -287,7 +287,7 @@ public class MissingDoclet extends StandardDoclet {
     }
     // exclude special enum methods
     String simpleName = element.getSimpleName().toString();
-    if (simpleName.equals("values") || simpleName.equals("valueOf")) {
+    if ("values".equals(simpleName) || "valueOf".equals(simpleName)) {
       if (element.getEnclosingElement().getKind() == ElementKind.ENUM) {
         return true;
       }

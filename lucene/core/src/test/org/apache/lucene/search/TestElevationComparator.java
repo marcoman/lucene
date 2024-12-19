@@ -145,7 +145,7 @@ public class TestElevationComparator extends LuceneTestCase {
     Document doc = new Document();
     for (int i = 0; i < vals.length - 2; i += 2) {
       doc.add(newTextField(vals[i], vals[i + 1], Field.Store.YES));
-      if (vals[i].equals("id")) {
+      if ("id".equals(vals[i])) {
         doc.add(new SortedDocValuesField(vals[i], new BytesRef(vals[i + 1])));
       }
     }

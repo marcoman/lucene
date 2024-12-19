@@ -159,7 +159,7 @@ public class SimpleWKTShapeParser {
   private static double[][] parseMultiPoint(StreamTokenizer stream)
       throws IOException, ParseException {
     String token = nextEmptyOrOpen(stream);
-    if (token.equals(EMPTY)) {
+    if (EMPTY.equals(token)) {
       return null;
     }
     ArrayList<Double> lats = new ArrayList<>();
@@ -175,7 +175,7 @@ public class SimpleWKTShapeParser {
   /** parses a LINESTRING */
   private static Line parseLine(StreamTokenizer stream) throws IOException, ParseException {
     String token = nextEmptyOrOpen(stream);
-    if (token.equals(EMPTY)) {
+    if (EMPTY.equals(token)) {
       return null;
     }
     ArrayList<Double> lats = new ArrayList<>();
@@ -188,7 +188,7 @@ public class SimpleWKTShapeParser {
   /** parses a MULTILINESTRING */
   private static Line[] parseMultiLine(StreamTokenizer stream) throws IOException, ParseException {
     String token = nextEmptyOrOpen(stream);
-    if (token.equals(EMPTY)) {
+    if (EMPTY.equals(token)) {
       return null;
     }
     ArrayList<Line> lines = new ArrayList<>();
@@ -237,7 +237,7 @@ public class SimpleWKTShapeParser {
   private static Polygon[] parseMultiPolygon(StreamTokenizer stream)
       throws IOException, ParseException {
     String token = nextEmptyOrOpen(stream);
-    if (token.equals(EMPTY)) {
+    if (EMPTY.equals(token)) {
       return null;
     }
     ArrayList<Polygon> polygons = new ArrayList<>();
@@ -337,7 +337,7 @@ public class SimpleWKTShapeParser {
   /** checks if next token is an EMPTY or open paren */
   private static String nextEmptyOrOpen(StreamTokenizer stream) throws IOException, ParseException {
     final String next = nextWord(stream);
-    if (next.equals(EMPTY) || next.equals(LPAREN)) {
+    if (EMPTY.equals(next) || LPAREN.equals(next)) {
       return next;
     }
     throw new ParseException(
@@ -376,7 +376,7 @@ public class SimpleWKTShapeParser {
   private static String nextCloserOrComma(StreamTokenizer stream)
       throws IOException, ParseException {
     String token = nextWord(stream);
-    if (token.equals(COMMA) || token.equals(RPAREN)) {
+    if (COMMA.equals(token) || RPAREN.equals(token)) {
       return token;
     }
     throw new ParseException(

@@ -80,13 +80,13 @@ class GermanStemmer {
     boolean doMore = true;
     while (doMore && buffer.length() > 3) {
       if ((buffer.length() + substCount > 5)
-          && buffer.substring(buffer.length() - 2, buffer.length()).equals("nd")) {
+          && "nd".equals(buffer.substring(buffer.length() - 2, buffer.length()))) {
         buffer.delete(buffer.length() - 2, buffer.length());
       } else if ((buffer.length() + substCount > 4)
-          && buffer.substring(buffer.length() - 2, buffer.length()).equals("em")) {
+          && "em".equals(buffer.substring(buffer.length() - 2, buffer.length()))) {
         buffer.delete(buffer.length() - 2, buffer.length());
       } else if ((buffer.length() + substCount > 4)
-          && buffer.substring(buffer.length() - 2, buffer.length()).equals("er")) {
+          && "er".equals(buffer.substring(buffer.length() - 2, buffer.length()))) {
         buffer.delete(buffer.length() - 2, buffer.length());
       } else if (buffer.charAt(buffer.length() - 1) == 'e') {
         buffer.deleteCharAt(buffer.length() - 1);
@@ -108,7 +108,7 @@ class GermanStemmer {
   private void optimize(StringBuilder buffer) {
     // Additional step for female plurals of professions and inhabitants.
     if (buffer.length() > 5
-        && buffer.substring(buffer.length() - 5, buffer.length()).equals("erin*")) {
+        && "erin*".equals(buffer.substring(buffer.length() - 5, buffer.length()))) {
       buffer.deleteCharAt(buffer.length() - 1);
       strip(buffer);
     }
@@ -124,7 +124,7 @@ class GermanStemmer {
   private void removeParticleDenotion(StringBuilder buffer) {
     if (buffer.length() > 4) {
       for (int c = 0; c < buffer.length() - 3; c++) {
-        if (buffer.substring(c, c + 4).equals("gege")) {
+        if ("gege".equals(buffer.substring(c, c + 4))) {
           buffer.delete(c, c + 2);
           return;
         }

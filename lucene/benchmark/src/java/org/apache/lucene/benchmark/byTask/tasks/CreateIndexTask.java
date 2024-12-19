@@ -123,7 +123,7 @@ public class CreateIndexTask extends PerfTask {
             "unable to instantiate class '" + mergeScheduler + "' as merge scheduler", e);
       }
 
-      if (mergeScheduler.equals("org.apache.lucene.index.ConcurrentMergeScheduler")) {
+      if ("org.apache.lucene.index.ConcurrentMergeScheduler".equals(mergeScheduler)) {
         ConcurrentMergeScheduler cms = (ConcurrentMergeScheduler) iwConf.getMergeScheduler();
         int maxThreadCount =
             config.get(

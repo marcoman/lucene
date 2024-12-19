@@ -471,7 +471,7 @@ public class DateRangePrefixTree extends NumberRangePrefixTree {
     // example: +2014-10-23T21:22:33.159Z
     if (str == null || str.isEmpty()) throw new IllegalArgumentException("str is null or blank");
     Calendar cal = newCal();
-    if (str.equals("*")) return cal;
+    if ("*".equals(str)) return cal;
     int offset = 0; // a pointer
     int parsedVal = 0;
     try {

@@ -747,13 +747,13 @@ public class TestPerfTasksLogic extends BenchmarkTestCase {
     int nChecked = 0;
     for (final TaskStats stats : benchmark.getRunData().getPoints().taskStats()) {
       String taskName = stats.getTask().getName();
-      if (taskName.equals("Rounds")) {
+      if ("Rounds".equals(taskName)) {
         assertEquals("Wrong total count!", 20 + 2 * n, stats.getCount());
         nChecked++;
-      } else if (taskName.equals("CreateIndex")) {
+      } else if ("CreateIndex".equals(taskName)) {
         assertEquals("Wrong count for CreateIndex!", n, stats.getCount());
         nChecked++;
-      } else if (taskName.equals("CloseIndex")) {
+      } else if ("CloseIndex".equals(taskName)) {
         assertEquals("Wrong count for CloseIndex!", n, stats.getCount());
         nChecked++;
       }

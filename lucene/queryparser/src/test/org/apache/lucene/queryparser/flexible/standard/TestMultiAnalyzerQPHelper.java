@@ -178,10 +178,10 @@ public class TestMultiAnalyzerQPHelper extends LuceneTestCase {
         prevStartOffset = offsetAtt.startOffset();
         prevEndOffset = offsetAtt.endOffset();
         String text = termAtt.toString();
-        if (text.equals("triplemulti")) {
+        if ("triplemulti".equals(text)) {
           multiToken = 2;
           return true;
-        } else if (text.equals("multi")) {
+        } else if ("multi".equals(text)) {
           multiToken = 1;
           return true;
         } else {

@@ -43,7 +43,7 @@ public class TestExternalCodecs extends LuceneTestCase {
 
     @Override
     public PostingsFormat getPostingsFormatForField(String field) {
-      if (field.equals("field2") || field.equals("field1") || field.equals("id")) {
+      if ("field2".equals(field) || "field1".equals(field) || "id".equals(field)) {
         return defaultFormat;
       } else {
         return ramFormat;

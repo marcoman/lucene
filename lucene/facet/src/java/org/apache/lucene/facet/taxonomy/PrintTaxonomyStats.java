@@ -41,7 +41,7 @@ public class PrintTaxonomyStats {
     boolean printTree = false;
     String path = null;
     for (int i = 0; i < args.length; i++) {
-      if (args[i].equals("-printTree")) {
+      if ("-printTree".equals(args[i])) {
         printTree = true;
       } else {
         path = args[i];

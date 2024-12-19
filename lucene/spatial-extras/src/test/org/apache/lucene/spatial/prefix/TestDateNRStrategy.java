@@ -147,7 +147,7 @@ public class TestDateNRStrategy extends RandomSpatialOpStrategyTestCase {
     try {
       tree.clearFieldsAfter(cal, random().nextInt(Calendar.FIELD_COUNT + 1) - 1);
     } catch (AssertionError e) {
-      if (!e.getMessage().equals("Calendar underflow")) throw e;
+      if (!"Calendar underflow".equals(e.getMessage())) throw e;
     }
     return cal;
   }

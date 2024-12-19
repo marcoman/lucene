@@ -197,7 +197,7 @@ public class TestPostingsOffsets extends LuceneTestCase {
         int end = dp.endOffset();
         assert end >= 0 && end >= start;
         // check that the offsets correspond to the term in the src text
-        assertTrue(storedNumbers.substring(start, end).equals("hundred"));
+        assertTrue("hundred".equals(storedNumbers.substring(start, end)));
         if (withPayloads) {
           // check that we have a payload and it starts with "pos"
           assertNotNull(dp.getPayload());

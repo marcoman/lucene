@@ -115,7 +115,7 @@ public class TestNativeFSLockFactory extends BaseLockFactoryTestCase {
     public SeekableByteChannel newByteChannel(
         Path path, Set<? extends OpenOption> options, FileAttribute<?>... attrs)
         throws IOException {
-      if (path.getFileName().toString().equals("test.lock")) {
+      if ("test.lock".equals(path.getFileName().toString())) {
         throw new AccessDeniedException(path.toString(), null, "fake access denied");
       }
       return super.newByteChannel(path, options, attrs);

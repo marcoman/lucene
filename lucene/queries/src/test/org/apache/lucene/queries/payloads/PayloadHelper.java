@@ -80,9 +80,9 @@ public class PayloadHelper {
     public boolean incrementToken() throws IOException {
 
       if (input.incrementToken()) {
-        if (fieldName.equals(FIELD)) {
+        if (FIELD.equals(fieldName)) {
           payloadAtt.setPayload(new BytesRef(payloadField));
-        } else if (fieldName.equals(MULTI_FIELD)) {
+        } else if (MULTI_FIELD.equals(fieldName)) {
           if (numSeen % 2 == 0) {
             payloadAtt.setPayload(new BytesRef(payloadMultiField1));
           } else {

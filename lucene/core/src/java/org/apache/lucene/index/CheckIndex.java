@@ -4297,9 +4297,9 @@ public final class CheckIndex implements Closeable {
         // Deprecated. Remove in Lucene 11.
         System.err.println("-crossCheckTermVectors is deprecated, use '-level 3' instead");
         opts.level = Level.MAX_VALUE;
-      } else if (arg.equals("-verbose")) {
+      } else if ("-verbose".equals(arg)) {
         opts.verbose = true;
-      } else if (arg.equals("-segment")) {
+      } else if ("-segment".equals(arg)) {
         if (i == args.length - 1) {
           throw new IllegalArgumentException("ERROR: missing name for -segment option");
         }

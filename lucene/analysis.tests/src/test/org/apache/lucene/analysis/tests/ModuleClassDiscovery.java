@@ -38,7 +38,7 @@ abstract class ModuleClassDiscovery {
 
   private static final Predicate<String> ALLOW_MODULES =
       name ->
-          name.equals("org.apache.lucene.core") || name.startsWith("org.apache.lucene.analysis.");
+          "org.apache.lucene.core".equals(name) || name.startsWith("org.apache.lucene.analysis.");
 
   static {
     Assert.assertTrue(

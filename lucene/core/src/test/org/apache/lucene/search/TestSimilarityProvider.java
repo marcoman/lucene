@@ -93,7 +93,7 @@ public class TestSimilarityProvider extends LuceneTestCase {
 
     @Override
     public Similarity get(String field) {
-      if (field.equals("foo")) {
+      if ("foo".equals(field)) {
         return sim1;
       } else {
         return sim2;

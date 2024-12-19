@@ -100,7 +100,7 @@ public class TestIndexWriterWithThreads extends LuceneTestCase {
           // System.out.println(Thread.currentThread().getName() + ": hit exc");
           // ioe.printStackTrace(System.out);
           if (ioe.getMessage().startsWith("fake disk full at")
-              || ioe.getMessage().equals("now failing on purpose")) {
+              || "now failing on purpose".equals(ioe.getMessage())) {
             try {
               Thread.sleep(1);
             } catch (InterruptedException ie) {

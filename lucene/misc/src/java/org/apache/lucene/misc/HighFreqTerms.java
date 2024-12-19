@@ -60,7 +60,7 @@ public class HighFreqTerms {
     Comparator<TermStats> comparator = new DocFreqComparator();
 
     for (int i = 1; i < args.length; i++) {
-      if (args[i].equals("-t")) {
+      if ("-t".equals(args[i])) {
         comparator = new TotalTermFreqComparator();
       } else {
         try {

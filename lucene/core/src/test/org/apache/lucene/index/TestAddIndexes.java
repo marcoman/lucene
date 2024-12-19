@@ -1426,7 +1426,7 @@ public class TestAddIndexes extends LuceneTestCase {
 
     @Override
     public PostingsFormat getPostingsFormatForField(String field) {
-      if (field.equals("id")) {
+      if ("id".equals(field)) {
         return directFormat;
       } else {
         return defaultFormat;

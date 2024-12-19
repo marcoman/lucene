@@ -391,8 +391,8 @@ public class TestDisjunctionMaxQuery extends LuceneTestCase {
       String doc2 = s.storedFields().document(h[2].doc).get("id");
       String doc3 = s.storedFields().document(h[3].doc).get("id");
 
-      assertTrue("doc0 should be d2 or d4: " + doc0, doc0.equals("d2") || doc0.equals("d4"));
-      assertTrue("doc1 should be d2 or d4: " + doc0, doc1.equals("d2") || doc1.equals("d4"));
+      assertTrue("doc0 should be d2 or d4: " + doc0, "d2".equals(doc0) || "d4".equals(doc0));
+      assertTrue("doc1 should be d2 or d4: " + doc0, "d2".equals(doc1) || "d4".equals(doc1));
       assertEquals("score0 and score1 should match", score0, score1, SCORE_COMP_THRESH);
       assertEquals("wrong third", "d3", doc2);
       assertTrue(

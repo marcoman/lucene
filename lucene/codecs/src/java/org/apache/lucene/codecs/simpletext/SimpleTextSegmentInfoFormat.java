@@ -94,7 +94,7 @@ public class SimpleTextSegmentInfoFormat extends SegmentInfoFormat {
       Version minVersion;
       try {
         String versionString = readString(SI_MIN_VERSION.length, scratch);
-        if (versionString.equals("null")) {
+        if ("null".equals(versionString)) {
           minVersion = null;
         } else {
           minVersion = Version.parse(versionString);

@@ -61,7 +61,7 @@ public class SerbianNormalizationFilterFactory extends TokenFilterFactory {
 
   @Override
   public TokenStream create(TokenStream input) {
-    if (this.haircut.equals("regular")) {
+    if ("regular".equals(this.haircut)) {
       return new SerbianNormalizationRegularFilter(input);
     } else {
       return new SerbianNormalizationFilter(input);

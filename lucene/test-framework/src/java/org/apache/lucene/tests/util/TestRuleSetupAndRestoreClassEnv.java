@@ -207,12 +207,12 @@ final class TestRuleSetupAndRestoreClassEnv extends AbstractBeforeAfterRule {
     // Always pick a random one for consistency (whether tests.locale was specified or not).
     savedLocale = Locale.getDefault();
     Locale randomLocale = randomLocale(random);
-    locale = testLocale.equals("random") ? randomLocale : localeForLanguageTag(testLocale);
+    locale = "random".equals(testLocale) ? randomLocale : localeForLanguageTag(testLocale);
     Locale.setDefault(locale);
 
     savedTimeZone = TimeZone.getDefault();
     TimeZone randomTimeZone = randomTimeZone(random());
-    timeZone = testTimeZone.equals("random") ? randomTimeZone : TimeZone.getTimeZone(testTimeZone);
+    timeZone = "random".equals(testTimeZone) ? randomTimeZone : TimeZone.getTimeZone(testTimeZone);
     TimeZone.setDefault(timeZone);
     similarity = new AssertingSimilarity(new RandomSimilarity(random()));
 

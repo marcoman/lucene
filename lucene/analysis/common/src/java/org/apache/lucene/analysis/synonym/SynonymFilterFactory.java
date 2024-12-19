@@ -155,9 +155,9 @@ public class SynonymFilterFactory extends TokenFilterFactory implements Resource
 
     try (Analyzer a = analyzer) {
       String formatClass = format;
-      if (format == null || format.equals("solr")) {
+      if (format == null || "solr".equals(format)) {
         formatClass = SolrSynonymParser.class.getName();
-      } else if (format.equals("wordnet")) {
+      } else if ("wordnet".equals(format)) {
         formatClass = WordnetSynonymParser.class.getName();
       }
       // TODO: expose dedup as a parameter?

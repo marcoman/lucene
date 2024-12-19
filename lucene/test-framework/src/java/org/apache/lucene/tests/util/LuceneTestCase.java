@@ -1380,7 +1380,7 @@ public abstract class LuceneTestCase extends Assert {
 
   private static BaseDirectoryWrapper newFSDirectory(Path f, LockFactory lf, boolean bare) {
     String fsdirClass = TEST_DIRECTORY;
-    if (fsdirClass.equals("random")) {
+    if ("random".equals(fsdirClass)) {
       fsdirClass = RandomPicks.randomFrom(random(), FS_DIRECTORIES);
     }
 
@@ -1622,7 +1622,7 @@ public abstract class LuceneTestCase extends Assert {
   }
 
   static Directory newDirectoryImpl(Random random, String clazzName, LockFactory lf) {
-    if (clazzName.equals("random")) {
+    if ("random".equals(clazzName)) {
       if (rarely(random)) {
         clazzName = RandomPicks.randomFrom(random, CORE_DIRECTORIES);
       } else if (rarely(random)) {

@@ -1390,7 +1390,7 @@ public final class TestUtil {
   // TODO: remove this, push this test to Lucene40/Lucene42 codec tests
   public static boolean fieldSupportsHugeBinaryDocValues(String field) {
     String dvFormat = getDocValuesFormat(field);
-    if (dvFormat.equals("Lucene40") || dvFormat.equals("Lucene42")) {
+    if ("Lucene40".equals(dvFormat) || "Lucene42".equals(dvFormat)) {
       return false;
     }
     return true;
@@ -1406,7 +1406,7 @@ public final class TestUtil {
 
   public static boolean anyFilesExceptWriteLock(Directory dir) throws IOException {
     String[] files = dir.listAll();
-    if (files.length > 1 || (files.length == 1 && !files[0].equals("write.lock"))) {
+    if (files.length > 1 || (files.length == 1 && !"write.lock".equals(files[0]))) {
       return true;
     } else {
       return false;

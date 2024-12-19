@@ -677,20 +677,20 @@ public class TestFSTs extends LuceneTestCase {
 
     int idx = 0;
     while (idx < args.length) {
-      if (args[idx].equals("-limit")) {
+      if ("-limit".equals(args[idx])) {
         limit = Integer.parseInt(args[1 + idx]);
         idx++;
-      } else if (args[idx].equals("-utf8")) {
+      } else if ("-utf8".equals(args[idx])) {
         inputMode = 0;
-      } else if (args[idx].equals("-utf32")) {
+      } else if ("-utf32".equals(args[idx])) {
         inputMode = 1;
-      } else if (args[idx].equals("-docFreq")) {
+      } else if ("-docFreq".equals(args[idx])) {
         storeDocFreqs = true;
-      } else if (args[idx].equals("-noArcArrays")) {
+      } else if ("-noArcArrays".equals(args[idx])) {
         noArcArrays = true;
-      } else if (args[idx].equals("-ords")) {
+      } else if ("-ords".equals(args[idx])) {
         storeOrds = true;
-      } else if (args[idx].equals("-noverify")) {
+      } else if ("-noverify".equals(args[idx])) {
         verify = false;
       } else if (args[idx].startsWith("-")) {
         System.err.println("Unrecognized option: " + args[idx]);
@@ -1715,7 +1715,7 @@ public class TestFSTs extends LuceneTestCase {
     for (int i = 0; i < 100; i++) {
       String prefix = Character.toString((char) ('a' + i));
       terms.add(newBytesRef(prefix));
-      if (prefix.equals("m") == false) {
+      if ("m".equals(prefix) == false) {
         for (int j = 0; j < 20; j++) {
           // Make a big enough FST that the root cache will be created:
           String suffix = TestUtil.randomRealisticUnicodeString(random(), 10, 20);

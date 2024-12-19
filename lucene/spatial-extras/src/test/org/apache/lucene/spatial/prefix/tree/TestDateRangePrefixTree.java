@@ -200,7 +200,7 @@ public class TestDateRangePrefixTree extends LuceneTestCase {
       Calendar cal2 = tree.toCalendar(shape);
       assertEquals(calString, tree.toString(cal2));
 
-      if (!calString.equals("*")) { // not world cell
+      if (!"*".equals(calString)) { // not world cell
         // to Term and back to Cell
         Cell cell = (Cell) shape;
         BytesRef term = cell.getTokenBytesNoLeaf(null);
@@ -227,7 +227,7 @@ public class TestDateRangePrefixTree extends LuceneTestCase {
       try {
         tree.clearFieldsAfter(cal, prevPrecField);
       } catch (AssertionError e) {
-        if (e.getMessage().equals("Calendar underflow")) return;
+        if ("Calendar underflow".equals(e.getMessage())) return;
         throw e;
       }
     }

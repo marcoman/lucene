@@ -147,7 +147,7 @@ public class FileSwitchDirectory extends Directory {
       return "";
     }
     String ext = name.substring(i + 1);
-    if (ext.equals("tmp")) {
+    if ("tmp".equals(ext)) {
       Matcher matcher = EXT_PATTERN.matcher(name.substring(0, i + 1));
       if (matcher.find()) {
         return matcher.group(1);

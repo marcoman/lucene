@@ -49,9 +49,9 @@ public class SearchWithSortTask extends ReadTask {
     for (int i = 0; i < fields.length; i++) {
       String field = fields[i];
       SortField sortField0;
-      if (field.equals("doc")) {
+      if ("doc".equals(field)) {
         sortField0 = SortField.FIELD_DOC;
-      } else if (field.equals("score")) {
+      } else if ("score".equals(field)) {
         sortField0 = SortField.FIELD_SCORE;
       } else {
         int index = field.lastIndexOf(':');

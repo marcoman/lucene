@@ -367,7 +367,7 @@ public class Dictionary {
       } else if ("SFX".equals(firstWord)) {
         parseAffix(
             suffixes, suffixContFlags, line, reader, SUFFIX, seenPatterns, seenStrips, flags);
-      } else if (line.equals("COMPLEXPREFIXES")) {
+      } else if ("COMPLEXPREFIXES".equals(line)) {
         complexPrefixes =
             true; // 2-stage prefix+1-stage suffix instead of 2-stage suffix+1-stage prefix
       } else if ("CIRCUMFIX".equals(firstWord)) {
@@ -684,7 +684,7 @@ public class Dictionary {
     StringBuilder sb = new StringBuilder();
     String[] args = header.split("\\s+");
 
-    boolean crossProduct = args[2].equals("Y");
+    boolean crossProduct = "Y".equals(args[2]);
 
     int numLines;
     try {
@@ -714,7 +714,7 @@ public class Dictionary {
       }
 
       char flag = flagParsingStrategy.parseFlag(ruleArgs[1]);
-      String strip = ruleArgs[2].equals("0") ? "" : ruleArgs[2];
+      String strip = "0".equals(ruleArgs[2]) ? "" : ruleArgs[2];
       String affixArg = ruleArgs[3];
       char[] appendFlags = null;
 

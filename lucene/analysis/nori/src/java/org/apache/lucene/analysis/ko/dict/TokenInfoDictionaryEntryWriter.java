@@ -67,16 +67,16 @@ class TokenInfoDictionaryEntryWriter extends DictionaryEntryWriter {
     final POS.Type posType = POS.resolveType(entry[8]);
     final POS.Tag leftPOS;
     final POS.Tag rightPOS;
-    if (posType == POS.Type.MORPHEME || posType == POS.Type.COMPOUND || entry[9].equals("*")) {
+    if (posType == POS.Type.MORPHEME || posType == POS.Type.COMPOUND || "*".equals(entry[9])) {
       leftPOS = POS.resolveTag(entry[4]);
-      assert (entry[9].equals("*") && entry[10].equals("*"));
+      assert ("*".equals(entry[9]) && "*".equals(entry[10]));
       rightPOS = leftPOS;
     } else {
       leftPOS = POS.resolveTag(entry[9]);
       rightPOS = POS.resolveTag(entry[10]);
     }
-    final String reading = entry[7].equals("*") ? "" : entry[0].equals(entry[7]) ? "" : entry[7];
-    final String expression = entry[11].equals("*") ? "" : entry[11];
+    final String reading = "*".equals(entry[7]) ? "" : entry[0].equals(entry[7]) ? "" : entry[7];
+    final String expression = "*".equals(entry[11]) ? "" : entry[11];
 
     // extend buffer if necessary
     int left = buffer.remaining();

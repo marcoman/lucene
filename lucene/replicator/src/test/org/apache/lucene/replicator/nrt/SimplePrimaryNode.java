@@ -580,12 +580,12 @@ class SimplePrimaryNode extends PrimaryNode {
       String name = in.readString();
       String value = in.readString();
       // NOTE: clearly NOT general!
-      if (name.equals("docid") || name.equals("marker")) {
+      if ("docid".equals(name) || "marker".equals(name)) {
         doc.add(new StringField(name, value, Field.Store.YES));
-      } else if (name.equals("title")) {
+      } else if ("title".equals(name)) {
         doc.add(new StringField("title", value, Field.Store.YES));
         doc.add(new Field("titleTokenized", value, tokenizedWithTermVectors));
-      } else if (name.equals("body")) {
+      } else if ("body".equals(name)) {
         doc.add(new Field("body", value, tokenizedWithTermVectors));
       } else {
         throw new IllegalArgumentException("unhandled field name " + name);
@@ -602,15 +602,15 @@ class SimplePrimaryNode extends PrimaryNode {
       String name = in.readString();
       String value = in.readString();
       // NOTE: clearly NOT general!
-      if (name.equals("docid")) {
+      if ("docid".equals(name)) {
         docid = value;
         doc.add(new StringField("docid", value, Field.Store.YES));
-      } else if (name.equals("marker")) {
+      } else if ("marker".equals(name)) {
         doc.add(new StringField("marker", value, Field.Store.YES));
-      } else if (name.equals("title")) {
+      } else if ("title".equals(name)) {
         doc.add(new StringField("title", value, Field.Store.YES));
         doc.add(new Field("titleTokenized", value, tokenizedWithTermVectors));
-      } else if (name.equals("body")) {
+      } else if ("body".equals(name)) {
         doc.add(new Field("body", value, tokenizedWithTermVectors));
       } else {
         throw new IllegalArgumentException("unhandled field name " + name);

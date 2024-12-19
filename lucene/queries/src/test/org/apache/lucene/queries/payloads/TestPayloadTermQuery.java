@@ -88,9 +88,9 @@ public class TestPayloadTermQuery extends LuceneTestCase {
     public boolean incrementToken() throws IOException {
       boolean hasNext = input.incrementToken();
       if (hasNext) {
-        if (fieldName.equals("field")) {
+        if ("field".equals(fieldName)) {
           payloadAtt.setPayload(new BytesRef(payloadField));
-        } else if (fieldName.equals("multiField")) {
+        } else if ("multiField".equals(fieldName)) {
           if (numSeen % 2 == 0) {
             payloadAtt.setPayload(new BytesRef(payloadMultiField1));
           } else {

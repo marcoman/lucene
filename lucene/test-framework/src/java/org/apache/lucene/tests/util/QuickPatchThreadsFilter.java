@@ -38,7 +38,7 @@ public class QuickPatchThreadsFilter implements ThreadFilter {
       // LUCENE-4736
       StackTraceElement[] stack = t.getStackTrace();
       if (stack.length > 0
-          && stack[stack.length - 1].getClassName().equals("java.util.Timer$TimerImpl")) {
+          && "java.util.Timer$TimerImpl".equals(stack[stack.length - 1].getClassName())) {
         return true;
       }
     }

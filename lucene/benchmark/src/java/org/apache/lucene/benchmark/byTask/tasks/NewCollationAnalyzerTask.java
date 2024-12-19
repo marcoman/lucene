@@ -95,7 +95,7 @@ public class NewCollationAnalyzerTask extends PerfTask {
       String value = expr.nextToken();
       // for now we only support the "impl" parameter.
       // TODO: add strength, decomposition, etc
-      if (key.equals("impl")) {
+      if ("impl".equals(key)) {
         if (value.equalsIgnoreCase("icu")) impl = Implementation.ICU;
         else if (value.equalsIgnoreCase("jdk")) impl = Implementation.JDK;
         else throw new RuntimeException("Unknown parameter " + param);

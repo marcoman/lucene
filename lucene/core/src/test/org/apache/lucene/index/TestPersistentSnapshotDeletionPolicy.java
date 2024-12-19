@@ -140,7 +140,7 @@ public class TestPersistentSnapshotDeletionPolicy extends TestSnapshotDeletionPo
     try {
       psdp.snapshot();
     } catch (IOException ioe) {
-      if (ioe.getMessage().equals("now fail on purpose")) {
+      if ("now fail on purpose".equals(ioe.getMessage())) {
         // ok
       } else {
         throw ioe;

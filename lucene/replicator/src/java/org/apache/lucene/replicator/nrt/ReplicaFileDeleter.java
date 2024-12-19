@@ -80,7 +80,7 @@ class ReplicaFileDeleter {
     Set<String> toDelete = fileDeleter.getUnrefedFiles();
     for (String fileName : dir.listAll()) {
       if (fileDeleter.exists(fileName) == false
-          && fileName.equals("write.lock") == false
+          && "write.lock".equals(fileName) == false
           && fileName.equals(segmentsFileName) == false) {
         node.message("will delete unknown file \"" + fileName + "\"");
         toDelete.add(fileName);

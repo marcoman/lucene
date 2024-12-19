@@ -272,7 +272,7 @@ public class TestSpellChecker extends LuceneTestCase {
 
     similar = spellChecker.suggestSimilar("five", 2);
     if (similar.length > 0) {
-      assertFalse(similar[0].equals("five")); // don't suggest a word for itself
+      assertFalse("five".equals(similar[0])); // don't suggest a word for itself
     }
 
     similar = spellChecker.suggestSimilar("fiv", 2);

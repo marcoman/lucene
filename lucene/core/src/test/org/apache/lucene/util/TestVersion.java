@@ -225,7 +225,7 @@ public class TestVersion extends LuceneTestCase {
         atLeastOne = true;
         Version v = (Version) field.get(Version.class);
         final boolean dep = field.isAnnotationPresent(Deprecated.class);
-        if (v.equals(Version.LATEST) && field.getName().equals("LUCENE_CURRENT") == false) {
+        if (v.equals(Version.LATEST) && "LUCENE_CURRENT".equals(field.getName()) == false) {
           assertFalse(field.getName() + " should not be deprecated", dep);
         } else {
           assertTrue(field.getName() + " should be deprecated", dep);

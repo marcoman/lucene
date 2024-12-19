@@ -80,7 +80,7 @@ public class Geo3dSpatialContextFactory extends SpatialContextFactory {
     String calcStr = this.args.get("distCalculator");
     if (calcStr == null) {
       return;
-    } else if (calcStr.equals("geo3d")) {
+    } else if ("geo3d".equals(calcStr)) {
       this.distCalc = new Geo3dDistanceCalculator(planetModel);
     } else {
       super.initCalculator(); // some other distance calculator

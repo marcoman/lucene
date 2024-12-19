@@ -91,9 +91,9 @@ public class GenerateUTR30DataFiles {
           String name = path.getFileName().toString();
           return Files.isRegularFile(path)
               && name.matches(".*\\.(?s:txt)")
-              && !name.equals(NFC_TXT)
-              && !name.equals(NFKC_TXT)
-              && !name.equals(NFKC_CF_TXT);
+              && !NFC_TXT.equals(name)
+              && !NFKC_TXT.equals(name)
+              && !NFKC_CF_TXT.equals(name);
         };
     try (var stream = Files.list(Paths.get(".")).filter(predicate)) {
       for (Path file : stream.toList()) {

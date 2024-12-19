@@ -49,7 +49,7 @@ public class NLPLemmatizerOp {
     if (dictionaryLemmatizer != null) {
       lemmas = dictionaryLemmatizer.lemmatize(words, postags);
       for (int i = 0; i < lemmas.length; ++i) {
-        if (lemmas[i].equals("O")) { // this word is not in the dictionary
+        if ("O".equals(lemmas[i])) { // this word is not in the dictionary
           if (lemmatizerME != null) { // fall back to the MaxEnt lemmatizer if it's enabled
             if (maxEntLemmas == null) {
               maxEntLemmas = lemmatizerME.lemmatize(words, postags);

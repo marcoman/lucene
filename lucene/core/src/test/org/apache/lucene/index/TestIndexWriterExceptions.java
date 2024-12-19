@@ -223,7 +223,7 @@ public class TestIndexWriterExceptions extends LuceneTestCase {
 
     @Override
     public void apply(String name) {
-      if (doFail.get() != null && !name.equals("startDoFlush") && r.nextInt(40) == 17) {
+      if (doFail.get() != null && !"startDoFlush".equals(name) && r.nextInt(40) == 17) {
         if (VERBOSE) {
           System.out.println(Thread.currentThread().getName() + ": NOW FAIL: " + name);
           new Throwable().printStackTrace(System.out);
@@ -347,7 +347,7 @@ public class TestIndexWriterExceptions extends LuceneTestCase {
 
     @Override
     public void apply(String name) {
-      if (doFail && name.equals("DocumentsWriterPerThread addDocuments start"))
+      if (doFail && "DocumentsWriterPerThread addDocuments start".equals(name))
         throw new RuntimeException("intentionally failing");
     }
   }
@@ -365,7 +365,7 @@ public class TestIndexWriterExceptions extends LuceneTestCase {
 
     @Override
     public boolean incrementToken() throws IOException {
-      if (this.fieldName.equals("crash") && count++ >= 4) throw new IOException(CRASH_FAIL_MESSAGE);
+      if ("crash".equals(this.fieldName) && count++ >= 4) throw new IOException(CRASH_FAIL_MESSAGE);
       return input.incrementToken();
     }
 
@@ -445,7 +445,7 @@ public class TestIndexWriterExceptions extends LuceneTestCase {
 
     @Override
     public void apply(String name) {
-      if (doFail && name.equals("startMergeInit")) {
+      if (doFail && "startMergeInit".equals(name)) {
         failed = true;
         throw new RuntimeException("intentionally failing");
       }
@@ -1221,7 +1221,7 @@ public class TestIndexWriterExceptions extends LuceneTestCase {
 
     @Override
     public void apply(String name) {
-      if (doFail && name.equals("rollback before checkpoint"))
+      if (doFail && "rollback before checkpoint".equals(name))
         throw new RuntimeException("intentionally failing");
     }
   }
